@@ -14,10 +14,25 @@ writeln eval "[1, 2, 3, 4]"
 writeln len eval "[1, 2, 3, 4]"
 writeln "end1"
 
-times len eval "[1, 2, 3, 4]" writeln "This is a loop!"
+times len eval "[1, 2, 3, 4]" { writeln "This is a loop!" }
 
 writeln "end2"
 
-times 5 write "="
+times 5 { write "=" }
 writeln ""
 pass
+
+if True {
+    writeln "inside block"
+    writeln "inside block #2"
+    times 3 { writeln "#3" }
+    writeln "#4"
+}
+
+writeln "outside block"
+
+if-else True
+{ writeln "if true" }
+{ writeln "if false" }
+
+writeln "end of program"
