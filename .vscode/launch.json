@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "plan_executor.py",
+            "program": "${workspaceFolder}/plan_executor.py",
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "fizzbuzz.py",
+            "program": "${workspaceFolder}/example_plans/fizzbuzz.py",
+            "type": "debugpy",
+            "request": "launch",
+            "console": "integratedTerminal"
+        }
+    ]
+}

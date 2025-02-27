@@ -1,0 +1,18 @@
+
+# inspired by arkenidar/pangea-js
+
+def multiple#2
+arg 1 % arg 2 == 0
+
+def i#0
+times_count 1
+
+def multiple_of#1
+multiple i arg 1
+
+20 times
+print
+"fizz-buzz" when multiple_of 15
+"fizz" when multiple_of 3
+"buzz" when multiple_of 5
+i
