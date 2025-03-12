@@ -1,0 +1,38 @@
+
+# this file is named "testing.plan"
+
+# this file was used to test just implemented features
+
+# write and writeln of strings or numbers
+writeln "abc"
+writeln "Hello, World ! from Dario Cangialosi ... "
+write 123
+writeln 45.5
+writeln " ... from dot-plan file"
+writeln eval "2**10"
+writeln eval "[1, 2, 3, 4]"
+# writeln len eval "[1, 2, 3, 4]"
+writeln "end1"
+
+times 4 { writeln "This is a loop!" }
+
+writeln "end2"
+
+times 5 { write "=" }
+writeln ""
+pass
+
+if true {
+    writeln "inside block"
+    writeln "inside block #2"
+    times 3 { writeln "#3" }
+    writeln "#4"
+}
+
+writeln "outside block"
+
+if-else true
+{ writeln "if true" }
+{ writeln "if false" }
+
+writeln "end of program"

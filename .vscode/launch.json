@@ -2,6 +2,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/js_version/planExecutor.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "plan_executor.py",
             "program": "${workspaceFolder}/plan_executor.py",
             "type": "debugpy",

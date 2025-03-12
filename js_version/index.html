@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Executor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Plan Executor</h1>
+    
+    <div>
+        <h3>Plan Input:</h3>
+        <textarea id="planInput">write "Hello from the Plan Executor!"</textarea>
+        
+        <div class="controls">
+            <button id="executeBtn">Execute Plan</button>
+            <button id="loadPlanBtn">Load Plan File</button>
+            <input type="file" id="planFileInput" style="display: none;">
+            
+            <div class="log-level">
+                <label for="logLevel">Log Level:</label>
+                <select id="logLevel">
+                    <option value="ERROR">ERROR</option>
+                    <option value="WARN">WARN</option>
+                    <option value="INFO" selected>INFO</option>
+                    <option value="DEBUG">DEBUG</option>
+                    <option value="VERBOSE">VERBOSE</option>
+                </select>
+            </div>
+            
+            <div>
+                <input type="checkbox" id="debugMode" name="debugMode">
+                <label for="debugMode">Debug Mode</label>
+            </div>
+            
+            <button id="clearOutputBtn" class="clear-btn">Clear Output</button>
+        </div>
+    </div>
+    
+    <div>
+        <h3>Output:</h3>
+        <div id="output"></div>
+    </div>
+    
+    <script type="module">
+        import { executePlan, executePlanFromFile, logger, LogLevel } from './planExecutor.js';
+        
+        // Configure output display
+        const output = document.getElementById('output');
+        
+        // Override console methods to output to the #output div
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        const originalConsoleWarn = console.warn;
+        const originalConsoleInfo = console.info;
+        
+        console.log = function(...args) {
+            // Call the original console.log
+            originalConsoleLog.apply(console, args);
+            
+            // Output to the div
+            appendToOutput(args);
+        };
+        
+        console.error = function(...args) {
+            // Call the original console.error
+            originalConsoleError.apply(console, args);
+            
+            // Output to the div with error styling
+            appendToOutput(args, 'error');
+        };
+        
+        console.warn = function(...args) {
+            // Call the original console.warn
+            originalConsoleWarn.apply(console, args);
+            
+            // Output to the div with warning styling
+            appendToOutput(args, 'warn');
+        };
+        
+        console.info = function(...args) {
+            // Call the original console.info
+            originalConsoleInfo.apply(console, args);
+            
+            // Output to the div with info styling
+            appendToOutput(args, 'info');
+        };
+        
+        function appendToOutput(args, logClass = '') {
+            const text = args.map(arg => 
+                typeof arg === 'object' ? 
+                    JSON.stringify(arg, null, 2) : 
+                    String(arg)
+            ).join(' ');
+            
+            const logElement = document.createElement('div');
+            if (logClass) {
+                logElement.classList.add(logClass);
+            }
+            
+            // Handle log level prefixes with appropriate styling
+            if (text.includes('[ERROR]')) {
+                logElement.classList.add('error');
+            } else if (text.includes('[WARN]')) {
+                logElement.classList.add('warn');
+            } else if (text.includes('[INFO]')) {
+                logElement.classList.add('info');
+            } else if (text.includes('[DEBUG]')) {
+                logElement.classList.add('debug');
+            } else if (text.includes('[VERBOSE]')) {
+                logElement.classList.add('verbose');
+            }
+            
+            logElement.textContent = text;
+            output.appendChild(logElement);
+            
+            // Auto-scroll to the bottom
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        // Set up event listeners
+        document.getElementById('executeBtn').addEventListener('click', () => {
+            const planText = document.getElementById('planInput').value;
+            const debugMode = document.getElementById('debugMode').checked;
+            executePlan(planText, debugMode);
+        });
+        
+        document.getElementById('loadPlanBtn').addEventListener('click', () => {
+            document.getElementById('planFileInput').click();
+        });
+        
+        document.getElementById('planFileInput').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('planInput').value = e.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+        
+        document.getElementById('clearOutputBtn').addEventListener('click', () => {
+            output.innerHTML = '';
+        });
+        
+        // Set up log level change handler
+        document.getElementById('logLevel').addEventListener('change', (event) => {
+            const level = event.target.value;
+            logger.setLevel(LogLevel[level]);
+        });
+        
+        // Load plan file if specified in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const planFile = urlParams.get('plan');
+        const debug = urlParams.get('debug') === 'true';
+        const logLevel = urlParams.get('logLevel');
+        
+        // Set initial UI state from URL parameters
+        if (debug) {
+            document.getElementById('debugMode').checked = true;
+        }
+        
+        if (logLevel && LogLevel[logLevel.toUpperCase()] !== undefined) {
+            document.getElementById('logLevel').value = logLevel.toUpperCase();
+            logger.setLevel(LogLevel[logLevel.toUpperCase()]);
+        }
+        
+        if (planFile) {
+            fetch(planFile)
+                .then(response => {
+                    if (!response.ok) throw new Error(`Failed to load plan file: ${response.status}`);
+                    return response.text();
+                })
+                .then(text => {
+                    document.getElementById('planInput').value = text;
+                    console.info(`Loaded plan file: ${planFile}`);
+                })
+                .catch(error => {
+                    console.error('Error loading plan file:', error);
+                });
+        }
+    </script>
+</body>
+</html>
