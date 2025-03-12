@@ -2,28 +2,32 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/js_version/planExecutor.js",
+            "name": "Launch JS Program",
+            "program": "${workspaceFolder}/js_version/runPlan.js",
+            "cwd": "${workspaceFolder}/js_version",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "type": "node",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "runtimeExecutable": "/home/arkenidar/.nvm/versions/node/v22.5.1/bin/node"
         },
         {
             "name": "plan_executor.py",
             "program": "${workspaceFolder}/plan_executor.py",
             "type": "debugpy",
             "request": "launch",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
         },
         {
             "name": "fizzbuzz.py",
             "program": "${workspaceFolder}/example_plans/fizzbuzz.py",
             "type": "debugpy",
             "request": "launch",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/example_plans"
         }
     ]
 }
