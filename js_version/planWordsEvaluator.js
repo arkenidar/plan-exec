@@ -75,7 +75,7 @@ function evaluateWord(planWords, currentI) {
         nextI = currentI + 1;
     } else if (word === "writeln") {
         [evaluatedWord, nextI] = evaluateWord(planWords, currentI + 1);
-        textBuffer += String(evaluatedWord) + "\n";
+        textBuffer += String(evaluatedWord);
         console.log(textBuffer);
         textBuffer = "";
     } else if (word === "log") {

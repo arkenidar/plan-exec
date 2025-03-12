@@ -1,0 +1,6 @@
+writeln "1 line"
+writeln "2 line"
+buffer_write "[*]"
+buffer_write "[*]"
+buffer_write "[*]"
+buffer_flush
