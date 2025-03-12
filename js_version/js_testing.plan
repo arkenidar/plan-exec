@@ -8,6 +8,9 @@
 writeln "abc"
 writeln "Hello, World ! from Dario Cangialosi ... "
 buffer_write 123
+buffer_write " + "
+buffer_write 456
+buffer_flush
 writeln 45.5
 writeln " ... from dot-plan file"
 writeln eval "2**10"
@@ -19,8 +22,16 @@ times 4 { writeln "This is a loop!" }
 
 writeln "end2"
 
+# Example of buffer_write and buffer_flush
 times 5 { buffer_write "=" }
+buffer_flush
 writeln ""
+
+# Another example with buffer operations
+buffer_write "Buffered "
+buffer_write "content "
+buffer_write "example"
+buffer_flush
 
 # blocks / scope
 {

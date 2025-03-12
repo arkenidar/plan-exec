@@ -1,0 +1,8 @@
+writeln "Hello from the Plan Executor! #1"
+writeln "Hello from the Plan Executor! #2"
+writeln "--------------------"
+times 5 { buffer_write "*" }
+buffer_write " Dario "
+times 5 { buffer_write "*" }
+buffer_flush
+writeln "--------------------"

@@ -66,17 +66,18 @@ function evaluateWord(planWords, currentI) {
     } else if (word === "eval") {
         [evaluatedWord, nextI] = evaluateWord(planWords, currentI + 1);
         evaluatedWord = eval(evaluatedWord);
-    } else if (word === "buffer_write" || word === "writeln") {
+    } else if (word === "buffer_write") {
         [evaluatedWord, nextI] = evaluateWord(planWords, currentI + 1);
-        const endLine = { "buffer_write": "", "writeln": "\n" }[word];
-        
-        if (word === "buffer_write") {
-            textBuffer += String(evaluatedWord);
-        } else {
-            textBuffer += String(evaluatedWord);
-            console.log(textBuffer);
-            textBuffer = "";
-        }
+        textBuffer += String(evaluatedWord);
+    } else if (word === "buffer_flush") {
+        console.log(textBuffer);
+        textBuffer = "";
+        nextI = currentI + 1;
+    } else if (word === "writeln") {
+        [evaluatedWord, nextI] = evaluateWord(planWords, currentI + 1);
+        textBuffer += String(evaluatedWord) + "\n";
+        console.log(textBuffer);
+        textBuffer = "";
     } else if (word === "log") {
         // Add a new log command that uses our logger
         [evaluatedWord, nextI] = evaluateWord(planWords, currentI + 1);

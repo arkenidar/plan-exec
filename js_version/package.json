@@ -1,0 +1,12 @@
+{
+  "name": "plan_executor",
+  "version": "1.0.0",
+  "main": "planExecutor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dario Cangialosi",
+  "license": "ISC",
+  "description": "JS version of the plan executor",
+  "type": "module"
+}
