@@ -1,12 +1,13 @@
+# JavaScript plan file for testing
 
-# this file is named "testing.plan"
+# This is a comment
+# let log = console.log
+# log("abc")
 
-# this file was used to test just implemented features
-
-# write and writeln of strings or numbers
+# buffer_write and writeln of strings or numbers
 writeln "abc"
 writeln "Hello, World ! from Dario Cangialosi ... "
-write 123
+buffer_write 123
 writeln 45.5
 writeln " ... from dot-plan file"
 writeln eval "2**10"
@@ -18,11 +19,11 @@ times 4 { writeln "This is a loop!" }
 
 writeln "end2"
 
-times 5 { write "=" }
+times 5 { buffer_write "=" }
 writeln ""
-pass
 
-if true {
+# blocks / scope
+{
     writeln "inside block"
     writeln "inside block #2"
     times 3 { writeln "#3" }
@@ -31,8 +32,5 @@ if true {
 
 writeln "outside block"
 
-if-else true
-{ writeln "if true" }
-{ writeln "if false" }
-
-writeln "end of program"
+# can do conputations
+writeln eval "10*20"

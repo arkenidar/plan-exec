@@ -66,11 +66,11 @@ function evaluateWord(planWords, currentI) {
     } else if (word === "eval") {
         [evaluatedWord, nextI] = evaluateWord(planWords, currentI + 1);
         evaluatedWord = eval(evaluatedWord);
-    } else if (word === "write" || word === "writeln") {
+    } else if (word === "buffer_write" || word === "writeln") {
         [evaluatedWord, nextI] = evaluateWord(planWords, currentI + 1);
-        const endLine = { "write": "", "writeln": "\n" }[word];
+        const endLine = { "buffer_write": "", "writeln": "\n" }[word];
         
-        if (word === "write") {
+        if (word === "buffer_write") {
             textBuffer += String(evaluatedWord);
         } else {
             textBuffer += String(evaluatedWord);
