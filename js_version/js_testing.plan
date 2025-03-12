@@ -34,7 +34,7 @@ buffer_write "example"
 buffer_flush
 
 # blocks / scope
-{
+if true {
     writeln "inside block"
     writeln "inside block #2"
     times 3 { writeln "#3" }
@@ -43,5 +43,5 @@ buffer_flush
 
 writeln "outside block"
 
-# can do conputations
+# can do computations
 writeln eval "10*20"

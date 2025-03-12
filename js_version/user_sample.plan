@@ -1,3 +1,25 @@
+times 3 {
+    writeln "This is a loop!"
+}
+
+writeln "Hello from the Plan Executor!"
+
+if true { writeln "TRUE in IF" }
+if false { writeln "FALSE in IF" }
+
+if-else false
+{ writeln "TRUE in IF-ELSE" }
+{ writeln "FALSE in IF-ELSE" }
+
+if true {
+    writeln "inside if block #1"
+    writeln "inside if block #2"
+    times 3 { writeln "*3*" }
+    writeln "inside if block #4"
+}
+
+writeln "outside if block"
+
 writeln "Hello from the Plan Executor! #1"
 writeln "Hello from the Plan Executor! #2"
 writeln "--------------------"

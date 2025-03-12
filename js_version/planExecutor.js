@@ -91,7 +91,7 @@ async function executePlanFromFile(filePath, debugMode = false) {
 function init() {
     // Check if a plan file was specified in the URL
     const urlParams = new URLSearchParams(window.location.search);
-    const planFile = urlParams.get('plan') || 'js_testing.plan';
+    const planFile = urlParams.get('plan') || 'user_sample.plan';
     const debug = urlParams.get('debug') === 'true';
     
     // Set debug level from URL if specified
