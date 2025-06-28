@@ -5,6 +5,7 @@
 We're currently working on **Phase 1: Core Function System (v0.2)** - making the function system actually work.
 
 ### Immediate Priorities
+
 1. **Function calls** - Make `def add#2` actually callable
 2. **Argument passing** - Fix `arg 1`, `arg 2` to return actual values
 3. **Function scope** - Add proper call stack and argument isolation
@@ -13,10 +14,12 @@ We're currently working on **Phase 1: Core Function System (v0.2)** - making the
 ## 🛠️ Development Setup
 
 ### Prerequisites
+
 - Python 3.7+
 - Git
 
 ### Getting Started
+
 ```bash
 git clone <repository-url>
 cd plan-exec
@@ -25,6 +28,7 @@ python3 plan_executor.py example_plans/testing.plan  # Test current functionalit
 ```
 
 ### Testing Your Changes
+
 ```bash
 # Run the test suite
 python3 test_current_features.py
@@ -44,11 +48,13 @@ exec(open('plan_executor.py').read())
 ## 📋 Development Workflow
 
 ### Before You Start
+
 1. Check [STATUS.md](STATUS.md) for current priorities
 2. Look at existing issues or create a new one
 3. Read [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md) for architecture
 
 ### Making Changes
+
 1. **Create a feature branch**: `git checkout -b feature/function-calls`
 2. **Make your changes** in small, focused commits
 3. **Test thoroughly** with the test suite
@@ -56,6 +62,7 @@ exec(open('plan_executor.py').read())
 5. **Commit with descriptive messages** (see commit message format below)
 
 ### Commit Message Format
+
 ```
 type(scope): brief description
 
@@ -73,6 +80,7 @@ Known issues:
 **Types**: `feat`, `fix`, `docs`, `test`, `refactor`, `perf`, `chore`
 
 **Examples**:
+
 ```
 feat(functions): implement basic function call mechanism
 
@@ -89,17 +97,20 @@ Known issues:
 ## 🎯 Areas That Need Help
 
 ### 🔥 High Priority (v0.2)
+
 - **Function execution**: Make function calls actually work
 - **Argument handling**: Fix `arg N` to return actual values instead of strings
 - **Call stack**: Implement proper function call stack
 - **Boolean literals**: Add `true`/`false` keywords
 
 ### 🔶 Medium Priority (v0.3)
+
 - **Loop contexts**: Implement nested loop counter stack
 - **Context system**: Add proper scope management
 - **Control flow**: Add `return`, `break`, `continue`
 
 ### 🔵 Low Priority (v0.4+)
+
 - **When expressions**: Implement conditional expressions
 - **Error handling**: Better error messages
 - **Performance**: Optimize execution
@@ -108,18 +119,22 @@ Known issues:
 ## 🧪 Testing Guidelines
 
 ### Test Categories
+
 1. **Unit tests**: Test individual functions
 2. **Integration tests**: Test feature combinations
 3. **Regression tests**: Ensure fixes don't break existing features
 4. **Example tests**: Ensure documentation examples work
 
 ### Adding Tests
+
 When adding a feature, also add:
+
 - Test cases in `test_current_features.py`
 - Example in `docs/EXAMPLES.md`
 - Documentation in appropriate docs file
 
 ### Test Requirements
+
 - All tests should pass before committing
 - New features need corresponding tests
 - Bug fixes need regression tests
@@ -128,6 +143,7 @@ When adding a feature, also add:
 ## 📚 Documentation
 
 ### Documentation Files
+
 - **README.md**: Project overview and quick start
 - **STATUS.md**: Current status and roadmap
 - **docs/TUTORIAL.md**: Learning guide
@@ -136,6 +152,7 @@ When adding a feature, also add:
 - **docs/IMPLEMENTATION.md**: Architecture details
 
 ### Updating Documentation
+
 - Keep examples current with implementation
 - Update STATUS.md when features are completed
 - Add new examples for new features
@@ -144,6 +161,7 @@ When adding a feature, also add:
 ## 🐛 Bug Reports
 
 ### Good Bug Reports Include
+
 1. **Clear description** of the problem
 2. **Steps to reproduce** the issue
 3. **Expected behavior** vs actual behavior
@@ -152,6 +170,7 @@ When adding a feature, also add:
 6. **Environment** (Python version, OS)
 
 ### Example Bug Report
+
 ```
 **Problem**: Function calls silently fail instead of executing
 
@@ -169,6 +188,7 @@ When adding a feature, also add:
 ## 🎯 Feature Requests
 
 ### Good Feature Requests Include
+
 1. **Use case**: Why is this feature needed?
 2. **Proposed syntax**: How should it look?
 3. **Examples**: Show how it would be used
@@ -178,6 +198,7 @@ When adding a feature, also add:
 ## 🏗️ Architecture Guidelines
 
 ### Code Organization
+
 - **plan_executor.py**: Entry point, file handling
 - **plan_words_parsing.py**: Tokenization and parsing
 - **plan_words_evaluation.py**: Evaluation and execution
@@ -185,6 +206,7 @@ When adding a feature, also add:
 - **example_plans/**: Example programs
 
 ### Design Principles
+
 1. **Simplicity**: Keep the language simple and understandable
 2. **Consistency**: Similar operations should work similarly
 3. **Predictability**: Avoid surprising behavior
@@ -192,6 +214,7 @@ When adding a feature, also add:
 5. **Performance**: Don't sacrifice correctness for speed
 
 ### Code Style
+
 - Follow Python PEP 8 conventions
 - Use descriptive variable and function names
 - Add comments for complex logic
@@ -201,11 +224,13 @@ When adding a feature, also add:
 ## 🤝 Getting Help
 
 ### Communication
+
 - **Issues**: For bugs, feature requests, and questions
 - **Discussions**: For general questions and ideas
 - **Documentation**: Check docs/ directory first
 
 ### Learning Resources
+
 1. Start with [docs/TUTORIAL.md](docs/TUTORIAL.md)
 2. Read [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md) for architecture
 3. Look at existing code in plan_words_evaluation.py
@@ -214,6 +239,7 @@ When adding a feature, also add:
 ## 🎉 Recognition
 
 Contributors will be recognized in:
+
 - README.md contributors section
 - Release notes
 - Git commit history

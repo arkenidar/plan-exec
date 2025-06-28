@@ -4,32 +4,33 @@ A concise reference for the Plan Language syntax and features.
 
 ## Syntax Overview
 
-| Category | Syntax | Example |
-|----------|--------|---------|
-| **Comments** | `# comment` | `# This is a comment` |
-| **Output** | `writeln "text"` | `writeln "Hello World"` |
-| | `write "text"` | `write "No newline"` |
-| | `print "text"` | `print "Same as writeln"` |
-| **Functions** | `def name#arity` | `def add#2` |
-| | `arg N` | `arg 1 + arg 2` |
-| **Loops** | `N times { body }` | `5 times { writeln "hi" }` |
-| | `times_count N` | `times_count 1` |
-| **Conditionals** | `if cond { body }` | `if x > 0 { writeln "positive" }` |
-| | `if cond { true } { false }` | `if x % 2 == 0 { "even" } { "odd" }` |
-| | `value when cond` | `"even" when x % 2 == 0` |
-| | `val when cond else_val` | `"even" when x % 2 == 0 "odd"` |
-| **Control Flow** | `break` | `break` (exit current loop) |
-| | `break N` | `break 2` (exit N loop levels) |
-| | `continue` | `continue` (next iteration) |
-| | `return value` | `return 42` (exit function) |
-| **Evaluation** | `eval "expr"` | `eval "2**10"` |
+| Category         | Syntax                       | Example                              |
+| ---------------- | ---------------------------- | ------------------------------------ |
+| **Comments**     | `# comment`                  | `# This is a comment`                |
+| **Output**       | `writeln "text"`             | `writeln "Hello World"`              |
+|                  | `write "text"`               | `write "No newline"`                 |
+|                  | `print "text"`               | `print "Same as writeln"`            |
+| **Functions**    | `def name#arity`             | `def add#2`                          |
+|                  | `arg N`                      | `arg 1 + arg 2`                      |
+| **Loops**        | `N times { body }`           | `5 times { writeln "hi" }`           |
+|                  | `times_count N`              | `times_count 1`                      |
+| **Conditionals** | `if cond { body }`           | `if x > 0 { writeln "positive" }`    |
+|                  | `if cond { true } { false }` | `if x % 2 == 0 { "even" } { "odd" }` |
+|                  | `value when cond`            | `"even" when x % 2 == 0`             |
+|                  | `val when cond else_val`     | `"even" when x % 2 == 0 "odd"`       |
+| **Control Flow** | `break`                      | `break` (exit current loop)          |
+|                  | `break N`                    | `break 2` (exit N loop levels)       |
+|                  | `continue`                   | `continue` (next iteration)          |
+|                  | `return value`               | `return 42` (exit function)          |
+| **Evaluation**   | `eval "expr"`                | `eval "2**10"`                       |
 
 ## Operators
 
 ### Arithmetic
+
 ```plaintext
 +     # Addition        5 + 3 → 8
--     # Subtraction     5 - 3 → 2  
+-     # Subtraction     5 - 3 → 2
 *     # Multiplication  5 * 3 → 15
 /     # Division        6 / 3 → 2
 %     # Modulus         7 % 3 → 1
@@ -37,25 +38,28 @@ A concise reference for the Plan Language syntax and features.
 ```
 
 ### Comparison
+
 ```plaintext
 ==    # Equal           5 == 5 → true
 !=    # Not equal       5 != 3 → true
->     # Greater than    5 > 3 → true  
+>     # Greater than    5 > 3 → true
 <     # Less than       3 < 5 → true
 >=    # Greater/equal   5 >= 5 → true
 <=    # Less/equal      3 <= 5 → true
 ```
 
 ### Logical
+
 ```plaintext
 and   # Logical AND     true and false → false
-or    # Logical OR      true or false → true  
+or    # Logical OR      true or false → true
 not   # Logical NOT     not true → false
 ```
 
 ## Common Patterns
 
 ### Function Definition
+
 ```plaintext
 def function_name#argument_count
 function_body
@@ -64,7 +68,7 @@ function_body
 def square#1               # One argument
 arg 1 * arg 1
 
-def greet#2               # Two arguments  
+def greet#2               # Two arguments
 writeln "Hello " + arg 1 + ", age " + arg 2
 
 def pi#0                  # No arguments (constant)
@@ -72,11 +76,12 @@ def pi#0                  # No arguments (constant)
 ```
 
 ### Loop Patterns
+
 ```plaintext
 # Simple counting
 N times { writeln times_count 1 }
 
-# Nested loops  
+# Nested loops
 3 times {
     5 times {
         writeln times_count 2 + "," + times_count 1
@@ -91,6 +96,7 @@ N times { writeln times_count 1 }
 ```
 
 ### Conditional Patterns
+
 ```plaintext
 # Simple if
 if condition { action }
@@ -105,11 +111,12 @@ if x > 5 { "medium" }
 
 # When expressions
 "positive" when x > 0
-"negative" when x < 0  
+"negative" when x < 0
 "zero"
 ```
 
 ### Recursive Functions
+
 ```plaintext
 def factorial#1 {
     if arg 1 <= 1 { return 1 }
@@ -124,16 +131,17 @@ def fibonacci#1 {
 
 ## Context Rules
 
-| Context Type | Access Method | Scope Rules |
-|--------------|---------------|-------------|
-| **Function Arguments** | `arg N` | Only within same function |
-| **Loop Counters** | `times_count N` | N=1 is innermost, N=2 outer, etc. |
-| **Global Functions** | `function_name` | Available everywhere after definition |
+| Context Type           | Access Method   | Scope Rules                           |
+| ---------------------- | --------------- | ------------------------------------- |
+| **Function Arguments** | `arg N`         | Only within same function             |
+| **Loop Counters**      | `times_count N` | N=1 is innermost, N=2 outer, etc.     |
+| **Global Functions**   | `function_name` | Available everywhere after definition |
 
 ### Context Nesting
+
 ```plaintext
 def outer_func#1 {           # Function context
-    times arg 1 {            # Loop context  
+    times arg 1 {            # Loop context
         if times_count 1 > 5 { # Block context
             return "done"    # Returns from outer_func
         }
@@ -146,43 +154,45 @@ def outer_func#1 {           # Function context
 
 ## Control Flow Rules
 
-| Statement | Scope | Effect |
-|-----------|-------|--------|
-| `break` | Current loop | Exit loop |
-| `break N` | N loop levels | Exit N nested loops |
-| `continue` | Current loop | Next iteration |
-| `continue N` | N levels up | Continue Nth outer loop |
+| Statement      | Scope            | Effect                   |
+| -------------- | ---------------- | ------------------------ |
+| `break`        | Current loop     | Exit loop                |
+| `break N`      | N loop levels    | Exit N nested loops      |
+| `continue`     | Current loop     | Next iteration           |
+| `continue N`   | N levels up      | Continue Nth outer loop  |
 | `return value` | Current function | Exit function with value |
 
 ## Built-in Functions
 
-| Function | Purpose | Example |
-|----------|---------|---------|
-| `writeln` | Output with newline | `writeln "hello"` |
-| `write` | Output without newline | `write "hello"` |
-| `print` | Same as writeln | `print "hello"` |
-| `eval` | Evaluate expression | `eval "2+3"` |
-| `times_count` | Get loop counter | `times_count 1` |
-| `arg` | Get function argument | `arg 1` |
+| Function      | Purpose                | Example           |
+| ------------- | ---------------------- | ----------------- |
+| `writeln`     | Output with newline    | `writeln "hello"` |
+| `write`       | Output without newline | `write "hello"`   |
+| `print`       | Same as writeln        | `print "hello"`   |
+| `eval`        | Evaluate expression    | `eval "2+3"`      |
+| `times_count` | Get loop counter       | `times_count 1`   |
+| `arg`         | Get function argument  | `arg 1`           |
 
 ## Error Messages
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| "Unknown word: X" | Undefined function/variable | Define function or check spelling |
-| "condition must be boolean" | Non-boolean in if statement | Use comparison operators |
-| "times_count value must be integer" | Non-integer loop count | Use integer expression |
-| "No loop context" | break/continue outside loop | Use only within loops |
-| "No function context" | return outside function | Use only within functions |
+| Error                               | Cause                       | Solution                          |
+| ----------------------------------- | --------------------------- | --------------------------------- |
+| "Unknown word: X"                   | Undefined function/variable | Define function or check spelling |
+| "condition must be boolean"         | Non-boolean in if statement | Use comparison operators          |
+| "times_count value must be integer" | Non-integer loop count      | Use integer expression            |
+| "No loop context"                   | break/continue outside loop | Use only within loops             |
+| "No function context"               | return outside function     | Use only within functions         |
 
 ## Examples
 
 ### Hello World
+
 ```plaintext
 writeln "Hello, World!"
 ```
 
 ### Simple Calculator
+
 ```plaintext
 def add#2 { return arg 1 + arg 2 }
 def sub#2 { return arg 1 - arg 2 }
@@ -194,6 +204,7 @@ writeln mul 3 4     # Output: 12
 ```
 
 ### FizzBuzz (Compact)
+
 ```plaintext
 def fb#1
 "fizzbuzz" when arg 1 % 15 == 0
@@ -205,6 +216,7 @@ arg 1
 ```
 
 ### Factorial
+
 ```plaintext
 def fact#1 {
     if arg 1 <= 1 { return 1 }
@@ -215,6 +227,7 @@ writeln fact 5    # Output: 120
 ```
 
 ### Counting Even Numbers
+
 ```plaintext
 10 times {
     if times_count 1 % 2 != 0 { continue }
@@ -223,6 +236,7 @@ writeln fact 5    # Output: 120
 ```
 
 ### Nested Loop Pattern
+
 ```plaintext
 5 times {
     times_count 1 times {
@@ -239,7 +253,7 @@ writeln fact 5    # Output: 120
 plan-exec/
 ├── plan_executor.py           # Run with: python3 plan_executor.py file.plan
 ├── plan_words_parsing.py      # Tokenizer
-├── plan_words_evaluation.py   # Interpreter  
+├── plan_words_evaluation.py   # Interpreter
 ├── example_plans/
 │   ├── fizzbuzz.plan          # FizzBuzz example
 │   └── testing.plan           # Feature demonstration
@@ -273,7 +287,7 @@ python3 plan_executor.py
 ## See Also
 
 - [TUTORIAL.md](TUTORIAL.md) - Step-by-step learning guide
-- [SYNTAX.md](SYNTAX.md) - Complete syntax reference  
+- [SYNTAX.md](SYNTAX.md) - Complete syntax reference
 - [EXAMPLES.md](EXAMPLES.md) - Comprehensive examples
 - [CONTEXTS.md](CONTEXTS.md) - Context system details
 - [CONTROL_FLOW.md](CONTROL_FLOW.md) - Control flow mechanics

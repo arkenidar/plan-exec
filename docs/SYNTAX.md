@@ -3,12 +3,14 @@
 ## Basic Syntax
 
 ### Comments
+
 ```plaintext
 # This is a comment
 writeln "Hello"  # Inline comment
 ```
 
 ### Literals
+
 ```plaintext
 123          # Integer
 45.5         # Float
@@ -20,6 +22,7 @@ false        # Boolean
 ## Output Operations
 
 ### Write Operations
+
 ```plaintext
 write "text"        # Write without newline
 writeln "text"      # Write with newline
@@ -27,6 +30,7 @@ print "text"        # Print (equivalent to writeln)
 ```
 
 ### Buffer Operations (JS version)
+
 ```plaintext
 buffer_write "text"   # Write to buffer
 buffer_flush          # Flush buffer to output
@@ -35,6 +39,7 @@ buffer_flush          # Flush buffer to output
 ## Function Definitions
 
 ### Function Syntax
+
 ```plaintext
 def function_name#arity
 function_body
@@ -51,6 +56,7 @@ times_count 1
 ```
 
 ### Function Arguments
+
 ```plaintext
 arg 1    # First argument (1-indexed)
 arg 2    # Second argument
@@ -58,6 +64,7 @@ arg N    # Nth argument
 ```
 
 ### Function Calls
+
 ```plaintext
 add 5 3              # Call add function with arguments 5 and 3
 greet "World"        # Call greet function with "World"
@@ -67,6 +74,7 @@ counter              # Call counter function (no arguments)
 ## Loops
 
 ### Times Loop
+
 ```plaintext
 N times { body }     # Execute body N times
 N times body         # Single statement body
@@ -77,6 +85,7 @@ N times body         # Single statement body
 ```
 
 ### Loop Counter Access
+
 ```plaintext
 times_count 1        # Current (innermost) loop counter
 times_count 2        # One level outer loop counter
@@ -94,6 +103,7 @@ times_count N        # N levels outer loop counter
 ## Conditionals
 
 ### If Statements
+
 ```plaintext
 if condition { body }
 if condition { true_body } { false_body }    # if-else
@@ -104,6 +114,7 @@ if x % 2 == 0 { writeln "Even" } { writeln "Odd" }
 ```
 
 ### Conditional Expressions (when)
+
 ```plaintext
 value when condition               # Returns value if condition is true
 value when condition else_value    # Returns value if true, else_value if false
@@ -116,6 +127,7 @@ value when condition else_value    # Returns value if true, else_value if false
 ## Operators
 
 ### Arithmetic
+
 ```plaintext
 +    # Addition
 -    # Subtraction
@@ -126,6 +138,7 @@ value when condition else_value    # Returns value if true, else_value if false
 ```
 
 ### Comparison
+
 ```plaintext
 ==   # Equal
 !=   # Not equal
@@ -136,6 +149,7 @@ value when condition else_value    # Returns value if true, else_value if false
 ```
 
 ### Logical
+
 ```plaintext
 and  # Logical AND
 or   # Logical OR
@@ -145,6 +159,7 @@ not  # Logical NOT
 ## Expression Evaluation
 
 ### Eval Statement
+
 ```plaintext
 eval "expression"    # Evaluate Python/JavaScript expression
 
@@ -156,6 +171,7 @@ eval "[1, 2, 3, 4]"  # Returns array/list
 ## Blocks and Scoping
 
 ### Block Syntax
+
 ```plaintext
 {
     statement1
@@ -165,6 +181,7 @@ eval "[1, 2, 3, 4]"  # Returns array/list
 ```
 
 ### Block Return Value
+
 The last evaluated expression in a block becomes the block's return value.
 
 ## Control Flow

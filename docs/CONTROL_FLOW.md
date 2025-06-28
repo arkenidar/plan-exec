@@ -5,6 +5,7 @@ The Plan Language provides powerful context-aware control flow mechanisms that r
 ## Break Statement
 
 ### Basic Break
+
 ```plaintext
 times 10 {
     if times_count 1 == 5 { break }    # Exit current loop
@@ -14,6 +15,7 @@ times 10 {
 ```
 
 ### Multi-level Break
+
 ```plaintext
 times 3 {                    # Outer loop (level 2)
     times 5 {                # Inner loop (level 1)
@@ -29,6 +31,7 @@ times 3 {                    # Outer loop (level 2)
 ```
 
 ### Break Levels
+
 - `break` or `break 1` - Break current (innermost) loop
 - `break 2` - Break current loop and one outer loop
 - `break N` - Break N levels of nested loops
@@ -36,6 +39,7 @@ times 3 {                    # Outer loop (level 2)
 ## Continue Statement
 
 ### Basic Continue
+
 ```plaintext
 times 10 {
     if times_count 1 % 2 == 0 { continue }    # Skip even numbers
@@ -45,6 +49,7 @@ times 10 {
 ```
 
 ### Multi-level Continue
+
 ```plaintext
 times 3 {                    # Outer loop
     times 5 {                # Inner loop
@@ -62,6 +67,7 @@ times 3 {                    # Outer loop
 ## Return Statement
 
 ### Function Return
+
 ```plaintext
 def factorial#1 {
     if arg 1 == 0 { return 1 }
@@ -71,6 +77,7 @@ def factorial#1 {
 ```
 
 ### Return from Nested Contexts
+
 ```plaintext
 def complex_function#2 {
     times arg 1 {                    # Loop context
@@ -88,6 +95,7 @@ def complex_function#2 {
 ```
 
 **Key Points:**
+
 - `return` always exits the innermost function, regardless of nested loops/blocks
 - All intermediate contexts (loops, blocks) are properly unwound
 - Return value is passed back to the function caller
@@ -95,6 +103,7 @@ def complex_function#2 {
 ## If-Else Statements
 
 ### Basic If
+
 ```plaintext
 if condition {
     # Execute if condition is true
@@ -103,6 +112,7 @@ if condition {
 ```
 
 ### If-Else
+
 ```plaintext
 if condition {
     writeln "True branch"
@@ -112,6 +122,7 @@ if condition {
 ```
 
 ### Nested If-Else
+
 ```plaintext
 if x > 0 {
     if x > 10 {
@@ -125,6 +136,7 @@ if x > 0 {
 ```
 
 ### If with Control Flow
+
 ```plaintext
 def check_value#1 {
     if arg 1 < 0 { return "negative" }
@@ -142,27 +154,31 @@ times 10 {
 ## Conditional Expressions (when)
 
 ### Basic When
+
 ```plaintext
 result = "even" when x % 2 == 0
 writeln result    # Prints "even" if x is even, otherwise prints nothing
 ```
 
 ### When with Else
+
 ```plaintext
 result = "even" when x % 2 == 0 "odd"
 writeln result    # Prints "even" or "odd"
 ```
 
 ### Chained When (like switch)
+
 ```plaintext
 print
 "fizz-buzz" when multiple_of 15
-"fizz" when multiple_of 3  
+"fizz" when multiple_of 3
 "buzz" when multiple_of 5
 i
 ```
 
 **How chained when works:**
+
 1. Evaluates first `when`: if true, returns "fizz-buzz"
 2. If false, evaluates second `when`: if true, returns "fizz"
 3. If false, evaluates third `when`: if true, returns "buzz"
@@ -171,19 +187,23 @@ i
 ## Context-Aware Control Flow Rules
 
 ### Break/Continue Scope
+
 - Only affects loop contexts
 - Skips over function and block contexts
 - Counts loop nesting levels from innermost outward
 
-### Return Scope  
+### Return Scope
+
 - Only affects function contexts
 - Skips over all loop and block contexts
 - Always targets the innermost function
 
 ### Context Unwinding
+
 When control flow statements execute:
 
-1. **Break/Continue**: 
+1. **Break/Continue**:
+
    - Marks target loop contexts for exit/restart
    - Preserves function contexts
    - Cleans up intermediate block contexts
@@ -196,18 +216,21 @@ When control flow statements execute:
 ## Error Handling
 
 ### Invalid Control Flow
+
 ```plaintext
 # ERROR: break outside of loop
 def invalid_function#0 {
     break    # Error: no loop context to break from
 }
 
-# ERROR: return outside of function  
+# ERROR: return outside of function
 break      # Error: no function context to return from (if at global scope)
 ```
 
 ### Context Validation
+
 The evaluator validates that control flow statements are used in appropriate contexts:
+
 - `break`/`continue` require active loop context
 - `return` requires active function context
 - Level numbers must not exceed available context depth
@@ -215,6 +238,7 @@ The evaluator validates that control flow statements are used in appropriate con
 ## Advanced Control Flow
 
 ### Combining Control Statements
+
 ```plaintext
 def process_matrix#2 {
     times arg 1 {                # rows
@@ -236,12 +260,13 @@ def process_matrix#2 {
 ```
 
 ### Early Return Patterns
+
 ```plaintext
 def validate_and_process#1 {
     if arg 1 < 0 { return "error: negative input" }
     if arg 1 == 0 { return "error: zero input" }
     if arg 1 > 100 { return "error: input too large" }
-    
+
     # Main processing logic
     times arg 1 {
         if times_count 1 % 10 == 0 {
@@ -255,5 +280,5 @@ def validate_and_process#1 {
 ## See Also
 
 - [CONTEXTS.md](CONTEXTS.md) - Understanding execution contexts
-- [SYNTAX.md](SYNTAX.md) - Complete syntax reference  
+- [SYNTAX.md](SYNTAX.md) - Complete syntax reference
 - [EXAMPLES.md](EXAMPLES.md) - Practical control flow examples

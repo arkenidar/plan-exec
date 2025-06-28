@@ -36,12 +36,14 @@ plan-exec/
 ## Documentation
 
 ### For Users
+
 - 📚 [Tutorial](docs/TUTORIAL.md) - Step-by-step learning guide
 - ⚡ [Quick Reference](docs/QUICK_REFERENCE.md) - Concise syntax reference
 - 📖 [Language Syntax](docs/SYNTAX.md) - Complete syntax reference
 - 💡 [Examples](docs/EXAMPLES.md) - Comprehensive examples and projects
 
-### For Developers  
+### For Developers
+
 - 🏗️ [Context System](docs/CONTEXTS.md) - Function, loop, and block contexts
 - 🔄 [Control Flow](docs/CONTROL_FLOW.md) - Break, continue, return mechanics
 - ⚙️ [Implementation](docs/IMPLEMENTATION.md) - Technical architecture details

@@ -5,17 +5,21 @@ A step-by-step guide to learning the Plan Language.
 ## Getting Started
 
 ### Installation and Setup
+
 1. Clone the repository: `git clone <repo-url>`
 2. Navigate to directory: `cd plan-exec`
 3. Run your first program: `python3 plan_executor.py example_plans/testing.plan`
 
 ### Your First Program
+
 Create a file called `hello.plan`:
+
 ```plaintext
 writeln "Hello, Plan Language!"
 ```
 
 Run it:
+
 ```bash
 python3 plan_executor.py hello.plan
 ```
@@ -23,6 +27,7 @@ python3 plan_executor.py hello.plan
 ## Lesson 1: Basic Output
 
 ### Simple Output
+
 ```plaintext
 # Basic output
 writeln "Hello, World!"
@@ -42,6 +47,7 @@ writeln 2 + 3 * 4
 ## Lesson 2: Functions
 
 ### Defining Functions
+
 ```plaintext
 # Function with no arguments (like a variable)
 def my_name#0
@@ -56,6 +62,7 @@ greet my_name
 ```
 
 ### Function Arguments
+
 ```plaintext
 def add#2
 arg 1 + arg 2
@@ -74,6 +81,7 @@ writeln multiply 2 3 4   # Output: 24
 ## Lesson 3: Loops
 
 ### Basic Loops
+
 ```plaintext
 # Count from 1 to 5
 5 times {
@@ -87,6 +95,7 @@ writeln multiply 2 3 4   # Output: 24
 ```
 
 ### Nested Loops
+
 ```plaintext
 # Multiplication table
 3 times {
@@ -104,13 +113,14 @@ writeln multiply 2 3 4   # Output: 24
 ## Lesson 4: Conditionals
 
 ### If Statements
+
 ```plaintext
 def check_number#1 {
     if arg 1 > 0 {
         writeln arg 1 + " is positive"
     }
     if arg 1 < 0 {
-        writeln arg 1 + " is negative"  
+        writeln arg 1 + " is negative"
     }
     if arg 1 == 0 {
         writeln "Zero!"
@@ -123,6 +133,7 @@ check_number 0
 ```
 
 ### If-Else
+
 ```plaintext
 def even_or_odd#1 {
     if arg 1 % 2 == 0 {
@@ -143,6 +154,7 @@ even_or_odd 7
 ## Lesson 5: Conditional Expressions (when)
 
 ### Basic When
+
 ```plaintext
 def describe_number#1
 "even" when arg 1 % 2 == 0 "odd"
@@ -152,6 +164,7 @@ writeln describe_number 7    # Output: odd
 ```
 
 ### Chained When (like switch)
+
 ```plaintext
 def day_type#1
 "weekend" when arg 1 == 1
@@ -169,6 +182,7 @@ writeln day_type 3    # Output: weekday
 ## Lesson 6: Advanced Functions
 
 ### Recursive Functions
+
 ```plaintext
 def factorial#1 {
     if arg 1 <= 1 { return 1 }
@@ -179,6 +193,7 @@ writeln factorial 5    # Output: 120
 ```
 
 ### Functions Using Loops
+
 ```plaintext
 def count_to#1 {
     arg 1 times {
@@ -196,6 +211,7 @@ count_to 3
 ## Lesson 7: Control Flow
 
 ### Break and Continue
+
 ```plaintext
 # Break example
 10 times {
@@ -213,6 +229,7 @@ count_to 3
 ```
 
 ### Return from Functions
+
 ```plaintext
 def find_first_divisible#2 {
     arg 1 times {
@@ -233,6 +250,7 @@ writeln find_first_divisible 20 3    # Output: 3
 ## Lesson 8: Complex Examples
 
 ### FizzBuzz
+
 ```plaintext
 def fizzbuzz#1 {
     if arg 1 % 15 == 0 { return "fizzbuzz" }
@@ -247,12 +265,13 @@ def fizzbuzz#1 {
 ```
 
 ### Prime Number Checker
+
 ```plaintext
 def is_prime#1 {
     if arg 1 < 2 { return false }
     if arg 1 == 2 { return true }
     if arg 1 % 2 == 0 { return false }
-    
+
     # Check odd divisors
     def i#0 { times_count 1 * 2 + 1 }
     (arg 1 / 2) times {
@@ -276,6 +295,7 @@ def is_prime#1 {
 ## Lesson 9: Advanced Patterns
 
 ### Higher-Order Function Simulation
+
 ```plaintext
 # Apply operation to range
 def apply_to_range#3 {
@@ -290,6 +310,7 @@ apply_to_range 1 5 "square"
 ```
 
 ### State Management
+
 ```plaintext
 # Accumulator pattern
 def sum_range#2 {
@@ -309,26 +330,34 @@ def sum_range#2 {
 ## Projects
 
 ### Project 1: Number Guessing Game Logic
+
 Create the logic for a number guessing game:
+
 - Generate a target number (use a fixed value)
 - Create a function to check guesses (too high, too low, correct)
 - Simulate a few guesses and show results
 
 ### Project 2: Text Analysis
+
 Create functions to analyze text:
+
 - Count characters in a string (simplified)
 - Check if a string is a palindrome
 - Convert between upper and lower case
 
 ### Project 3: Mathematical Library
+
 Create a collection of mathematical functions:
+
 - GCD (Greatest Common Divisor)
-- LCM (Least Common Multiple)  
+- LCM (Least Common Multiple)
 - Power function with integer exponents
 - Square root approximation
 
 ### Project 4: Pattern Generator
+
 Create programs that generate various patterns:
+
 - Pyramid patterns with stars
 - Number triangles
 - Checkerboard patterns

@@ -5,11 +5,13 @@ This document provides comprehensive examples demonstrating all features of the 
 ## Basic Examples
 
 ### Hello World
+
 ```plaintext
 writeln "Hello, World!"
 ```
 
 ### Simple Arithmetic
+
 ```plaintext
 writeln 2 + 3 * 4        # Output: 14
 writeln (2 + 3) * 4      # Output: 20
@@ -17,6 +19,7 @@ writeln eval "2**10"     # Output: 1024
 ```
 
 ### Variables and Functions
+
 ```plaintext
 # Define a simple variable-like function
 def name#0
@@ -33,6 +36,7 @@ greet name               # Output: Hello, Alice
 ## Loop Examples
 
 ### Basic Loops
+
 ```plaintext
 # Simple counting
 5 times {
@@ -50,6 +54,7 @@ greet name               # Output: Hello, Alice
 ```
 
 ### Nested Loops
+
 ```plaintext
 # Multiplication table
 3 times {
@@ -60,6 +65,7 @@ greet name               # Output: Hello, Alice
 ```
 
 ### Loop Control
+
 ```plaintext
 # Break example
 10 times {
@@ -68,7 +74,7 @@ greet name               # Output: Hello, Alice
 }
 # Output: 1, 2, 3, 4, 5
 
-# Continue example  
+# Continue example
 10 times {
     if times_count 1 % 2 == 0 { continue }
     writeln times_count 1
@@ -79,6 +85,7 @@ greet name               # Output: Hello, Alice
 ## Function Examples
 
 ### Mathematical Functions
+
 ```plaintext
 # Factorial function
 def factorial#1 {
@@ -90,6 +97,7 @@ writeln factorial 5      # Output: 120
 ```
 
 ### Utility Functions
+
 ```plaintext
 # Check if number is even
 def is_even#1
@@ -100,7 +108,7 @@ def is_prime#1 {
     if arg 1 < 2 { return false }
     if arg 1 == 2 { return true }
     if is_even arg 1 { return false }
-    
+
     # Check odd divisors up to sqrt
     def i#0 { times_count 1 * 2 + 1 }
     (arg 1 / 2) times {
@@ -117,6 +125,7 @@ writeln is_prime 15      # Output: false
 ## Conditional Examples
 
 ### If-Else Chains
+
 ```plaintext
 def grade_letter#1 {
     if arg 1 >= 90 { return "A" }
@@ -130,10 +139,11 @@ writeln grade_letter 85  # Output: B
 ```
 
 ### When Expressions
+
 ```plaintext
 def number_type#1
 "positive" when arg 1 > 0
-"negative" when arg 1 < 0  
+"negative" when arg 1 < 0
 "zero"
 
 writeln number_type 5    # Output: positive
@@ -144,6 +154,7 @@ writeln number_type 0    # Output: zero
 ## FizzBuzz Implementation
 
 ### Complete FizzBuzz
+
 ```plaintext
 # Define helper functions
 def multiple#2
@@ -166,6 +177,7 @@ multiple i arg 1
 ```
 
 ### Alternative FizzBuzz
+
 ```plaintext
 def fizzbuzz#1 {
     if arg 1 % 15 == 0 { return "fizz-buzz" }
@@ -182,10 +194,11 @@ def fizzbuzz#1 {
 ## Advanced Examples
 
 ### Matrix Processing
+
 ```plaintext
 def print_matrix#2 {
     writeln "Matrix " + arg 1 + "×" + arg 2 + ":"
-    
+
     arg 1 times {                    # rows
         write "["
         arg 2 times {                # columns
@@ -200,6 +213,7 @@ print_matrix 3 4
 ```
 
 ### Recursive Functions
+
 ```plaintext
 # Fibonacci sequence
 def fibonacci#1 {
@@ -214,6 +228,7 @@ def fibonacci#1 {
 ```
 
 ### Pattern Generation
+
 ```plaintext
 # Generate triangle pattern
 def triangle#1 {
@@ -233,12 +248,13 @@ triangle 5
 ```
 
 ### Text Processing
+
 ```plaintext
 # Count vowels in a string (simplified)
 def count_vowels#1 {
     def vowels#0 "aeiouAEIOU"
     def count#0 0
-    
+
     # This is a simplified example - actual implementation
     # would need string iteration capabilities
     writeln "Counting vowels in: " + arg 1
@@ -249,13 +265,14 @@ def count_vowels#1 {
 ## Interactive Examples
 
 ### Simple Calculator
+
 ```plaintext
 def add#2 { return arg 1 + arg 2 }
 def subtract#2 { return arg 1 - arg 2 }
 def multiply#2 { return arg 1 * arg 2 }
-def divide#2 { 
+def divide#2 {
     if arg 2 == 0 { return "Error: Division by zero" }
-    return arg 1 / arg 2 
+    return arg 1 / arg 2
 }
 
 writeln "Calculator Demo:"
@@ -266,6 +283,7 @@ writeln "10 ÷ 5 = " + divide 10 5
 ```
 
 ### Game Logic
+
 ```plaintext
 # Simple number guessing game logic
 def check_guess#2 {
@@ -278,13 +296,14 @@ def target#0 { 42 }
 
 # Simulate some guesses
 writeln check_guess 30 target    # Output: Too low
-writeln check_guess 50 target    # Output: Too high  
+writeln check_guess 50 target    # Output: Too high
 writeln check_guess 42 target    # Output: Correct!
 ```
 
 ## Error Handling Examples
 
 ### Input Validation
+
 ```plaintext
 def safe_divide#2 {
     if arg 2 == 0 {
@@ -304,6 +323,7 @@ def validate_positive#1 {
 ```
 
 ### Boundary Checking
+
 ```plaintext
 def safe_array_access#2 {
     # arg 1 = array size, arg 2 = index
@@ -322,12 +342,13 @@ def safe_array_access#2 {
 ## Performance Examples
 
 ### Optimized Algorithms
+
 ```plaintext
 # Fast exponentiation
 def power#2 {
     if arg 2 == 0 { return 1 }
     if arg 2 == 1 { return arg 1 }
-    
+
     if arg 2 % 2 == 0 {
         def half#0 { power arg 1 (arg 2 / 2) }
         return half * half
@@ -340,6 +361,7 @@ writeln power 2 10       # Output: 1024
 ```
 
 ### Loop Optimization
+
 ```plaintext
 # Early termination in search
 def find_first_even#1 {
@@ -356,6 +378,7 @@ def find_first_even#1 {
 ## Integration Examples
 
 ### Using External Evaluation
+
 ```plaintext
 # Mathematical calculations
 writeln eval "import math; math.sqrt(16)"    # Python version
@@ -367,6 +390,7 @@ writeln eval "len([1,2,3,4,5])"              # Python
 ```
 
 ### Buffer Operations (JavaScript version)
+
 ```plaintext
 # Building formatted output
 buffer_write "Result: "
