@@ -97,6 +97,14 @@ def evaluate_word(plan_words, current_i):
             evaluated_word = "ERROR: Missing function name after def"
             next_i = None
 
+    elif word == "true":
+        evaluated_word = True
+        debug_print(f"Boolean literal: {evaluated_word}")
+
+    elif word == "false":
+        evaluated_word = False
+        debug_print(f"Boolean literal: {evaluated_word}")
+
     elif word == "arg":
         # Handle function arguments: arg 1, arg 2, etc.
         arg_num, next_i = evaluate_word(plan_words, current_i + 1)
@@ -142,6 +150,30 @@ def evaluate_word(plan_words, current_i):
             next_i = None
 
     elif word == "times":
+        # Check if this is an infix times: number times { block }
+        if current_i > 0:
+            # Try to get the count from the previous word
+            try:
+                prev_word = plan_words[current_i - 1]
+                if prev_word.isdigit():
+                    loop_count = int(prev_word)
+                    # Look for block after times
+                    if next_i < len(plan_words) and plan_words[next_i] == "{":
+                        old_times_count = times_count
+                        
+                        for times_i in range(loop_count):
+                            times_count = times_i + 1  # Update global counter (1-based)
+                            debug_print("times_i:", times_i, "times_count:", times_count)
+                            # evaluate the block
+                            evaluated_word, next_i = evaluate_block(plan_words, next_i)
+                            debug_print("evaluated_word:", evaluated_word)
+                        
+                        times_count = old_times_count  # Restore previous counter
+                        return evaluated_word, next_i
+            except:
+                pass
+        
+        # Fall back to prefix times syntax
         # evaluate the times count
         evaluated_word, next_i_block_start = evaluate_word(plan_words, next_i)
         loop_count = evaluated_word
@@ -164,6 +196,12 @@ def evaluate_word(plan_words, current_i):
             # skip the block
             next_i = skip_block(plan_words, next_i_block_start)
     else:
+        # Check if the next word is an infix operator
+        if current_i + 1 < len(plan_words) and plan_words[current_i + 1] in infix_operators:
+            evaluated_word, next_i = handle_infix_operator(plan_words, current_i)
+            if evaluated_word is not None:
+                return evaluated_word, next_i
+        
         # Check if it's a user-defined function first
         if word in function_registry:
             # It's a function call - collect arguments if any
@@ -280,64 +318,92 @@ def handle_print_with_conditionals(plan_words, start_i):
     
     return current_i
 
+# Unified operator and function system additions
+infix_operators = {
+    '+': lambda a, b: a + b,
+    '-': lambda a, b: a - b,
+    '*': lambda a, b: a * b,
+    '/': lambda a, b: a / b,
+    '%': lambda a, b: a % b,
+    '==': lambda a, b: a == b,
+    '!=': lambda a, b: a != b,
+    '<': lambda a, b: a < b,
+    '>': lambda a, b: a > b,
+    '<=': lambda a, b: a <= b,
+    '>=': lambda a, b: a >= b,
+}
+
+# Call stack for function arguments (pangea-js style)
+call_stack = []
+
+def handle_infix_operator(plan_words, current_i):
+    """Handle infix operators like pangea-js"""
+    if current_i + 2 < len(plan_words):
+        # Get left operand directly as a literal or variable
+        left_word = plan_words[current_i]
+        try:
+            left_val = eval(left_word)
+        except:
+            left_val = left_word
+        
+        operator = plan_words[current_i + 1]
+        
+        # Get right operand directly as a literal or variable  
+        right_word = plan_words[current_i + 2]
+        try:
+            right_val = eval(right_word)
+        except:
+            right_val = right_word
+        
+        if operator in infix_operators:
+            result = infix_operators[operator](left_val, right_val)
+            debug_print(f"Infix operation: {left_val} {operator} {right_val} = {result}")
+            return result, current_i + 3
+    return None, None
+
 def call_function(func_name, args):
-    """Call a user-defined function"""
-    global times_count
+    """Call a user-defined function with pangea-js style argument handling"""
+    global call_stack
     
     if func_name not in function_registry:
+        debug_print(f"ERROR: Function {func_name} not found")
         return None
     
     func_def = function_registry[func_name]
-    expected_args = func_def['arg_count']
+    func_body = func_def['body']
     
-    if len(args) != expected_args:
-        debug_print(f"Warning: Function {func_name} expects {expected_args} args, got {len(args)}")
+    # Push arguments onto call stack
+    call_stack.append(args)
     
-    # Set up function arguments
-    old_args = getattr(call_function, 'current_args', None)
-    call_function.current_args = args
+    # Store old arg function behavior
+    old_evaluate_word = evaluate_word
     
-    # Special handling for built-in variables
-    if func_name == "i":
-        result = times_count
-    else:
+    def new_evaluate_word(plan_words, current_i):
+        word = plan_words[current_i]
+        if word == "arg" and current_i + 1 < len(plan_words):
+            try:
+                arg_num = int(plan_words[current_i + 1])
+                if len(call_stack) > 0 and arg_num <= len(call_stack[-1]):
+                    return call_stack[-1][arg_num - 1], current_i + 2
+            except:
+                pass
+        return old_evaluate_word(plan_words, current_i)
+    
+    # Temporarily replace evaluate_word
+    globals()['evaluate_word'] = new_evaluate_word
+    
+    try:
         # Execute function body
         result = None
-        for word in func_def['body']:
-            if word == "times_count":
-                result = times_count
-            elif word in function_registry:
-                result = call_function(word, [])
-            elif word.startswith("arg"):
-                try:
-                    arg_num = int(word.split()[1])
-                    if arg_num <= len(args):
-                        result = args[arg_num - 1]
-                except:
-                    pass
-            else:
-                # Try to evaluate the expression
-                try:
-                    # Replace function calls in the expression
-                    expr = word
-                    for other_func in function_registry:
-                        if other_func in expr:
-                            func_result = call_function(other_func, [])
-                            expr = expr.replace(other_func, str(func_result))
-                    
-                    # Replace arg references
-                    for i, arg in enumerate(args):
-                        expr = expr.replace(f"arg {i+1}", str(arg))
-                    
-                    result = eval(expr)
-                except:
-                    result = word
+        current_i = 0
+        while current_i < len(func_body):
+            result, next_i = evaluate_word(func_body, current_i)
+            if next_i is None:
+                break
+            current_i = next_i
+    finally:
+        # Restore original evaluate_word and pop call stack
+        globals()['evaluate_word'] = old_evaluate_word
+        call_stack.pop()
     
-    # Restore previous arguments
-    if old_args is not None:
-        call_function.current_args = old_args
-    elif hasattr(call_function, 'current_args'):
-        delattr(call_function, 'current_args')
-    
-    debug_print(f"Function {func_name}({args}) = {result}")
     return result

@@ -1,0 +1,17 @@
+# Test the enhanced unified features
+
+# Test boolean literals
+writeln true
+writeln false
+
+# Test infix arithmetic
+writeln 3 + 4
+writeln 10 - 2
+writeln 5 * 6
+
+# Test simple function definition
+def add#2
+writeln "Function add called"
+
+# Call the function
+add 5 3
