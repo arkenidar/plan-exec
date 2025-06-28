@@ -1,0 +1,48 @@
+# Plan Language v0.2.0 - Feature Demonstration
+
+writeln "=== Plan Language v0.2.0 Demo ==="
+
+# 1. Boolean Literals
+writeln "1. Boolean literals:"
+writeln true
+writeln false
+
+# 2. Arithmetic Operations  
+writeln "2. Arithmetic:"
+writeln eval "5 + 3"
+writeln eval "10 - 4"
+writeln eval "3 * 7"
+
+# 3. Boolean Conditionals
+writeln "3. Conditionals:"
+if true { writeln "✅ True condition works" }
+if false { writeln "❌ This shouldn't print" } { writeln "✅ Else condition works" }
+
+# 4. Function Definition and Calls
+writeln "4. Functions:"
+def add#2
+arg 1 + arg 2
+
+def multiply#2  
+arg 1 * arg 2
+
+writeln add 10 5
+writeln multiply 6 7
+
+# 5. Boolean Functions
+writeln "5. Boolean logic in functions:"
+def is_even#1
+arg 1 % 2 == 0
+
+def greater_than#2
+arg 1 > arg 2
+
+writeln is_even 8
+writeln is_even 7
+writeln greater_than 10 5
+
+# 6. Loops with Counter
+writeln "6. Loops:"
+5 times { writeln times_count }
+
+writeln "=== All features working! ==="
