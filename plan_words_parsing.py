@@ -20,10 +20,17 @@ def extract_words_from_plan(plan):
         # remove empty words
         words = [word for word in words if word != ""]
 
-        # check for comments
-        if "#" in words:
+        # check for comments (but not function definitions)
+        comment_index = -1
+        for i, word in enumerate(words):
+            # Only treat # as comment if it's at the start of a word
+            if word.startswith("#"):
+                comment_index = i
+                break
+        
+        if comment_index >= 0:
             # remove the words after the comment
-            words = words[: words.index("#")]
+            words = words[:comment_index]
 
         # add the words to the plan
         plan_words.extend(words)
