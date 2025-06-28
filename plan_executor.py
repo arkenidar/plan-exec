@@ -1,6 +1,6 @@
 # plan executor
 
-
+import sys
 import plan_words_parsing
 import plan_words_evaluation
 
@@ -13,5 +13,17 @@ def execute_plan(plan_to_execute):
 
 # entry point
 if __name__ == "__main__":
+    # check for command line arguments
+    if len(sys.argv) > 1:
+        plan_file = sys.argv[1]
+    else:
+        plan_file = "example_plans/testing.plan"
+    
     # execute the plan
-    execute_plan(open("example_plans/testing.plan").read())
+    try:
+        with open(plan_file, 'r') as f:
+            execute_plan(f.read())
+    except FileNotFoundError:
+        print(f"Error: Plan file '{plan_file}' not found.")
+    except Exception as e:
+        print(f"Error executing plan: {e}")
