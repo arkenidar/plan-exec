@@ -1,0 +1,6 @@
+# Debug len function step by step
+writeln "Step 1 - eval result:"
+writeln eval "[1, 2, 3, 4]"
+
+writeln "Step 2 - trying len:"  
+writeln len [1, 2, 3, 4]

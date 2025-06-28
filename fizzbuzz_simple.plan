@@ -1,0 +1,17 @@
+# Simplified version of your fizzbuzz pattern
+
+def multiple#2
+arg 1 % arg 2 == 0
+
+def i#0
+times_count 1
+
+def multiple_of#1
+multiple i arg 1
+
+# Simple test first
+3 times {
+print
+"test" when multiple_of 3
+i
+}

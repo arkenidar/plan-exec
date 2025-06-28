@@ -116,6 +116,41 @@ def evaluate_word(plan_words, current_i):
                 return expr, next_i
         return None, next_i
     
+    # Length function (for your testing.plan)
+    elif word == "len":
+        if next_i < len(plan_words):
+            value, next_i = evaluate_word(plan_words, next_i)
+            try:
+                return len(value), next_i
+            except:
+                return 0, next_i
+        return None, next_i
+    
+    # Pass statement (no-op)
+    elif word == "pass":
+        return None, next_i
+    
+    # Print statement (for multi-line output in fizzbuzz.plan)
+    elif word == "print":
+        return handle_print_multiline(plan_words, current_i)
+    
+    # Buffer operations (for your user_sample.plan)
+    elif word == "buffer_write":
+        if next_i < len(plan_words):
+            value, next_i = evaluate_word(plan_words, next_i)
+            # Store in a global buffer
+            if not hasattr(evaluate_word, 'output_buffer'):
+                evaluate_word.output_buffer = []
+            evaluate_word.output_buffer.append(str(value))
+            return value, next_i
+        return None, next_i
+    
+    elif word == "buffer_flush":
+        if hasattr(evaluate_word, 'output_buffer'):
+            print(''.join(evaluate_word.output_buffer), end='')
+            evaluate_word.output_buffer = []
+        return None, next_i
+    
     # Conditionals
     elif word == "if":
         if next_i < len(plan_words):
@@ -133,33 +168,60 @@ def evaluate_word(plan_words, current_i):
         # Check for infix: N times { block }
         if current_i > 0:
             prev_word = plan_words[current_i - 1]
-            if prev_word.isdigit() and next_i < len(plan_words) and plan_words[next_i] == "{":
+            if prev_word.isdigit():
                 count = int(prev_word)
                 old_times_count = times_count
                 result = None
-                block_start = next_i
-                for i in range(count):
-                    times_count = i + 1
-                    result, _ = evaluate_block(plan_words, block_start)
-                times_count = old_times_count
-                # Skip to end of block
-                next_i = skip_block(plan_words, block_start)
-                return result, next_i
+                
+                # Check if next token is a block
+                if next_i < len(plan_words) and plan_words[next_i] == "{":
+                    # Block version: N times { ... }
+                    block_start = next_i
+                    for i in range(count):
+                        times_count = i + 1
+                        result, _ = evaluate_block(plan_words, block_start)
+                    times_count = old_times_count
+                    next_i = skip_block(plan_words, block_start)
+                    return result, next_i
+                else:
+                    # Multi-line version: N times \n statement1 \n statement2 ... (your original pattern)
+                    for i in range(count):
+                        times_count = i + 1
+                        # Execute all following statements until major keyword
+                        temp_i = next_i
+                        while temp_i < len(plan_words):
+                            word_check = plan_words[temp_i]
+                            # Stop at major keywords or numbers (next loop)
+                            if (word_check in ['def', 'times', 'if'] or 
+                                (word_check.isdigit() and temp_i + 1 < len(plan_words) and plan_words[temp_i + 1] == 'times')):
+                                break
+                            result, temp_i = evaluate_word(plan_words, temp_i)
+                    times_count = old_times_count
+                    return result, temp_i
         
-        # Prefix: times N { block }
+        # Prefix: times N { block } or times N statement
         if next_i < len(plan_words):
             count, next_i = evaluate_word(plan_words, next_i)
-            if isinstance(count, int) and next_i < len(plan_words) and plan_words[next_i] == "{":
+            if isinstance(count, int):
                 old_times_count = times_count
                 result = None
-                block_start = next_i
-                for i in range(count):
-                    times_count = i + 1
-                    result, _ = evaluate_block(plan_words, block_start)
-                times_count = old_times_count
-                # Skip to end of block
-                next_i = skip_block(plan_words, block_start)
-                return result, next_i
+                
+                if next_i < len(plan_words) and plan_words[next_i] == "{":
+                    # Block version
+                    block_start = next_i
+                    for i in range(count):
+                        times_count = i + 1
+                        result, _ = evaluate_block(plan_words, block_start)
+                    times_count = old_times_count
+                    next_i = skip_block(plan_words, block_start)
+                    return result, next_i
+                else:
+                    # Single statement version: times N statement
+                    for i in range(count):
+                        times_count = i + 1
+                        result, next_i = evaluate_word(plan_words, next_i)
+                    times_count = old_times_count
+                    return result, next_i
         return None, next_i
     
     # Times counter
@@ -209,23 +271,37 @@ def evaluate_word(plan_words, current_i):
         
         # Execute function body with arguments
         old_stack = call_stack.copy()
-        call_stack.clear()
         call_stack.extend(args)
         
         result = None
-        # Create a simple expression evaluator for function bodies
-        func_body_str = ' '.join(func_def['body'])
+        # Evaluate function body as Plan Language code
+        func_body_words = func_def['body']
         
-        # Replace arg references
-        for i in range(len(args)):
-            func_body_str = func_body_str.replace(f'arg {i+1}', str(args[i]))
+        # Create a temporary word list for function body evaluation
+        temp_words = []
+        for word in func_body_words:
+            # Replace arg references with actual values
+            if word == 'arg':
+                temp_words.append(word)  # Keep 'arg' keyword
+            elif word.isdigit() and temp_words and temp_words[-1] == 'arg':
+                # This is an arg number, keep as is for now
+                temp_words.append(word)
+            else:
+                temp_words.append(word)
         
-        # Try to evaluate as expression
-        try:
-            result = eval(func_body_str)
-        except:
-            # Fall back to simple parsing
-            result = func_body_str
+        # Evaluate the function body using Plan Language evaluator
+        if temp_words:
+            try:
+                result, _ = evaluate_word(temp_words, 0)
+            except:
+                # Fallback: try to evaluate as Python expression for simple cases
+                func_body_str = ' '.join(func_body_words)
+                for i in range(len(args)):
+                    func_body_str = func_body_str.replace(f'arg {i+1}', str(args[i]))
+                try:
+                    result = eval(func_body_str)
+                except:
+                    result = func_body_str
         
         call_stack.clear()
         call_stack.extend(old_stack)
@@ -252,6 +328,35 @@ def evaluate_word(plan_words, current_i):
         # Unknown word
         debug_print(f"Unknown word: {word}")
         return word, next_i
+
+# Multi-line print handler for FizzBuzz-style patterns
+def handle_print_multiline(plan_words, start_i):
+    """Handle multi-line print with when expressions (your fizzbuzz.plan pattern)"""
+    current_i = start_i + 1  # Skip the 'print' keyword
+    result_values = []
+    
+    # Process all expressions until we hit a major keyword or block
+    while current_i < len(plan_words):
+        word = plan_words[current_i]
+        
+        # Stop at major keywords or block structures
+        if word in ['def', 'times', 'if', '{', '}']:
+            break
+            
+        # Evaluate the expression
+        value, current_i = evaluate_word(plan_words, current_i)
+        if value is not None:
+            result_values.append(value)
+    
+    # Print the first non-None value (pangea-js style)
+    if result_values:
+        for val in result_values:
+            if val is not None:
+                print(val)
+                break
+        return result_values[0], current_i
+    
+    return None, current_i
 
 def evaluate_plan(plan_words):
     """Main evaluation function"""

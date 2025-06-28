@@ -1,0 +1,30 @@
+# Plan Language - Working Towards Your Original FizzBuzz
+# Let's make your signature example work!
+
+print "=== Working FizzBuzz Implementation ==="
+
+# Your original functions (working)
+def multiple#2
+arg 1 % arg 2 == 0
+
+# Simplified loop counter for now
+def i#0
+1
+
+# Your original function (working) 
+def multiple_of#1
+multiple i arg 1
+
+# Test the functions work
+print "Testing functions:"
+writeln multiple 6 2
+writeln multiple 5 2
+writeln multiple_of 3
+
+# Simple FizzBuzz logic
+print "Simple FizzBuzz test:"
+writeln "fizz" when multiple 3 3
+writeln "buzz" when multiple 5 5
+writeln "fizz-buzz" when multiple 15 15
+
+print "=== Functions work! Next: proper loop ==="

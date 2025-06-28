@@ -1,0 +1,18 @@
+# Debug your FizzBuzz pattern step by step
+
+# Step 1: Test the functions individually
+def multiple#2
+arg 1 % arg 2 == 0
+
+def i#0
+times_count 1  
+
+def multiple_of#1
+multiple i arg 1
+
+# Step 2: Test function calls
+print "Testing multiple function:"
+writeln multiple 6 2
+writeln multiple 5 2
+
+print "Testing multiple_of (should work in loop):"

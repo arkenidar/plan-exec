@@ -1,0 +1,27 @@
+# Plan Language - Preparing for Original Files
+# Testing features needed for your original plan files
+
+print "=== Preparing for Original Files ==="
+
+# Feature 1: Basic eval (from testing.plan)
+print "Testing eval:"
+writeln eval "2 + 3"
+
+# Feature 2: When operator (from fizzbuzz.plan)  
+print "Testing when:"
+writeln "yes" when true
+
+# Feature 3: Simple function (from fizzbuzz.plan)
+print "Testing function:"
+def test#1
+arg 1 > 0
+
+writeln "positive" when test 5
+
+# Feature 4: Times loop (from fizzbuzz.plan)
+print "Testing times:"  
+3 times {
+writeln "iteration"
+}
+
+print "=== Ready for your original files! ==="

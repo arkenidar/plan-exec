@@ -1,0 +1,4 @@
+# Test your original times pattern: "N times" without {...}
+
+print "Testing times without block:"
+3 times writeln "hello"

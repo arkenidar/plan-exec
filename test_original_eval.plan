@@ -1,0 +1,4 @@
+# Test your original eval feature
+writeln "Testing eval:"
+writeln eval "2**10"
+writeln eval "[1, 2, 3, 4]"
