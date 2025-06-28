@@ -100,14 +100,14 @@ def main():
         "Function definition parsing"
     )
     
-    # Test 9: Function call (should fail)
+    # Test 9: Function call (now working!)
     test_plan(
         'def add#2\narg 1 + arg 2\nwriteln add 5 3',
-        "Function call (expected to fail)",
-        should_succeed=False
+        "Function call",
+        should_succeed=True
     )
     
-    # Test 10: FizzBuzz excerpt (should fail)
+    # Test 10: FizzBuzz excerpt (now working!)
     test_plan(
         '''def multiple#2
 arg 1 % arg 2 == 0
@@ -116,8 +116,8 @@ def i#0
 times_count 1
 
 writeln multiple 6 2''',
-        "FizzBuzz functions (expected to fail)", 
-        should_succeed=False
+        "FizzBuzz functions", 
+        should_succeed=True
     )
     
     print(f"\n{'='*60}")

@@ -1,0 +1,7 @@
+writeln true
+writeln false
+if true { writeln "Boolean true works" }
+if false { writeln "This should not print" } { writeln "Boolean false works" }
+writeln eval "5 + 3"
+writeln eval "10 - 4"
+writeln eval "2 * 6"
