@@ -1,0 +1,10 @@
+def multiple_of_3#0
+6 % 3 == 0
+
+def multiple_of_5#0
+6 % 5 == 0
+
+print
+"fizz" when multiple_of_3
+"buzz" when multiple_of_5
+6

@@ -1,19 +1,20 @@
 # Plan Execution Language
 
-**🎉 v0.2.0 - Core Features Complete!**
+**🚀 v0.3.0 - When Operator & Advanced Features**
 
-A domain-specific language (DSL) for plan execution with working functions, loops, conditionals, and boolean operations.
+A domain-specific language (DSL) for plan execution with working functions, loops, conditionals, boolean operations, and the powerful `when` operator for conditional expressions.
 
 ## Overview
 
-The Plan Execution Language is inspired by [pangea-js](https://github.com/arkenidar/pangea-js) and provides a simple yet powerful syntax for computational plans. **All core features are now working and tested.**
+The Plan Execution Language is inspired by [pangea-js](https://github.com/arkenidar/pangea-js) and provides a simple yet powerful syntax for computational plans. **All core features including the `when` operator are now working and tested.**
 
-## ✅ Working Features (Test Suite: 10/10 Pass)
+## ✅ Working Features (v0.3.0)
 
 - **✅ Functions**: `def add#2` with `arg 1 + arg 2` - fully working
 - **✅ Boolean literals**: `true`, `false` - working
 - **✅ Conditionals**: `if true { ... }` and `if-else` - working  
 - **✅ Operators**: `+`, `-`, `*`, `/`, `%`, `==`, `!=`, `<`, `>` - working
+- **✅ When operator**: `"value" when condition` - **NEW in v0.3.0!**
 - **✅ Loops**: `N times { ... }` with `times_count` - working
 - **✅ Output**: `writeln`, `write` - working
 

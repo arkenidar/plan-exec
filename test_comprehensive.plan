@@ -1,0 +1,52 @@
+# Plan Language v0.3.0 - Comprehensive Test Suite
+# Testing all core features for stable commit
+
+print "=== Plan Language Test Suite v0.3.0 ==="
+
+# Test 1: Basic output
+print "Test 1: Basic output"
+writeln "Hello, Plan Language!"
+
+# Test 2: Boolean literals
+print "Test 2: Boolean literals"
+writeln true
+writeln false
+
+# Test 3: Arithmetic operators
+print "Test 3: Arithmetic"
+writeln 5 + 3
+writeln 10 - 4
+writeln 3 * 7
+writeln 15 / 3
+
+# Test 4: Comparison operators
+print "Test 4: Comparisons"
+writeln 5 == 5
+writeln 3 != 7
+writeln 8 > 2
+writeln 1 < 10
+
+# Test 5: Function definitions and calls
+print "Test 5: Functions"
+def add#2
+arg 1 + arg 2
+
+writeln add 5 7
+
+def greet#1
+"Hello, " + arg 1
+
+writeln greet "World"
+
+# Test 6: When operator (basic)
+print "Test 6: When operator"
+writeln "yes" when true
+writeln "no" when false
+
+# Test 7: Times loop (simple)
+print "Test 7: Times loop"
+3 times {
+writeln "Loop iteration"
+}
+
+print "=== All tests completed ==="

@@ -23,6 +23,7 @@ infix_operators = {
     '>': lambda a, b: a > b,
     '<=': lambda a, b: a <= b,
     '>=': lambda a, b: a >= b,
+    'when': lambda val, cond: val if cond else None,
 }
 
 def debug_print(*args):
@@ -136,10 +137,13 @@ def evaluate_word(plan_words, current_i):
                 count = int(prev_word)
                 old_times_count = times_count
                 result = None
+                block_start = next_i
                 for i in range(count):
                     times_count = i + 1
-                    result, next_i = evaluate_block(plan_words, next_i)
+                    result, _ = evaluate_block(plan_words, block_start)
                 times_count = old_times_count
+                # Skip to end of block
+                next_i = skip_block(plan_words, block_start)
                 return result, next_i
         
         # Prefix: times N { block }
@@ -148,15 +152,23 @@ def evaluate_word(plan_words, current_i):
             if isinstance(count, int) and next_i < len(plan_words) and plan_words[next_i] == "{":
                 old_times_count = times_count
                 result = None
+                block_start = next_i
                 for i in range(count):
                     times_count = i + 1
-                    result, next_i = evaluate_block(plan_words, next_i)
+                    result, _ = evaluate_block(plan_words, block_start)
                 times_count = old_times_count
+                # Skip to end of block
+                next_i = skip_block(plan_words, block_start)
                 return result, next_i
         return None, next_i
     
     # Times counter
     elif word == "times_count":
+        # Handle times_count with depth argument
+        if next_i < len(plan_words):
+            depth, next_i = evaluate_word(plan_words, next_i)
+            # For now, just return times_count regardless of depth
+            return times_count, next_i
         return times_count, next_i
     
     # Function definition

@@ -1,0 +1,42 @@
+# Plan Language v0.3.0 - When Operator Demo
+# Showcasing the new when operator functionality
+
+print "=== Plan Language v0.3.0 - When Operator Demo ==="
+
+# Basic when operator usage
+writeln "Success!" when true
+writeln "This won't show" when false
+
+# When operator with function calls
+def is_positive#1
+arg 1 > 0
+
+writeln "Number is positive" when is_positive 5
+writeln "Number is positive" when is_positive -3
+
+# When operator with more complex conditions
+def is_even#1
+arg 1 % 2 == 0
+
+writeln "Even number!" when is_even 4
+writeln "Even number!" when is_even 7
+
+# Combining with loops
+print "Loop with conditionals:"
+5 times {
+writeln "Hello World!"
+}
+
+# Simple FizzBuzz-style logic (simplified)
+def multiple_of_3#1
+arg 1 % 3 == 0
+
+def multiple_of_5#1
+arg 1 % 5 == 0
+
+print "Testing multiples:"
+writeln "Fizz" when multiple_of_3 9
+writeln "Buzz" when multiple_of_5 10
+writeln "Neither" when multiple_of_3 7
+
+print "=== v0.3.0 When Operator Working! ==="

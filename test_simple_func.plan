@@ -1,0 +1,8 @@
+def is_true#0
+true
+
+def test_val#0
+42
+
+writeln "yes" when is_true
+writeln test_val

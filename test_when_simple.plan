@@ -1,0 +1,5 @@
+def is_true#0
+true
+
+writeln "yes" when is_true
+writeln "no" when false

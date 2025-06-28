@@ -1,0 +1,4 @@
+# Simple times test
+3 times {
+writeln "hello"
+}

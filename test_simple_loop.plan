@@ -1,0 +1,6 @@
+def i#0
+times_count 1
+
+3 times {
+writeln i
+}

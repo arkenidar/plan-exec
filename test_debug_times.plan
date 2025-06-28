@@ -1,0 +1,9 @@
+# Debug times test
+def debug_set_flag#1
+plan_eval_debug_flag = arg 1
+
+debug_set_flag true
+
+3 times {
+writeln "hello"
+}

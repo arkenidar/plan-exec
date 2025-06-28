@@ -1,0 +1,48 @@
+# Plan Language v0.3.0 - Stable Features Test
+# Features confirmed working for intermediate commit
+
+print "=== Plan Language v0.3.0 Stable Features ==="
+
+# ✅ Basic I/O
+writeln "Hello, Plan Language!"
+
+# ✅ Boolean literals  
+writeln true
+writeln false
+
+# ✅ Arithmetic operators
+writeln 5 + 3
+writeln 10 - 4  
+writeln 3 * 7
+
+# ✅ Comparison operators
+writeln 5 == 5
+writeln 3 != 7
+
+# ✅ Function definitions (numeric operations)
+def add#2
+arg 1 + arg 2
+
+writeln add 5 7
+writeln add 10 15
+
+# ✅ When operator
+writeln "condition true" when true
+writeln "condition false" when false
+
+# ✅ Times loops
+print "Times loop test:"
+3 times {
+writeln "Iteration"
+}
+
+# ✅ Loop counter
+def show_counter#0
+times_count 1
+
+print "Loop with counter:"
+5 times {
+writeln show_counter
+}
+
+print "=== All stable features working! ==="

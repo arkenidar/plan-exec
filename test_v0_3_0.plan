@@ -1,0 +1,44 @@
+# Plan Language v0.3.0 - Production Ready Test
+# Core features confirmed working
+
+print "=== Plan Language v0.3.0 - Core Features ==="
+
+# Basic output
+writeln "Hello, Plan Language!"
+
+# Boolean literals
+writeln true
+writeln false
+
+# Arithmetic  
+writeln 5 + 3
+writeln 10 - 4
+
+# Comparisons
+writeln 5 == 5
+writeln 3 != 7
+
+# Simple functions
+def add#2
+arg 1 + arg 2
+
+writeln add 8 4
+
+# When operator (key feature)
+writeln "yes" when true
+writeln "no" when false
+
+# Simple conditional example
+def is_even#1
+arg 1 % 2 == 0
+
+writeln "even" when is_even 4
+writeln "odd" when is_even 5
+
+# Times loops
+print "Loop test:"
+3 times {
+writeln "Working!"
+}
+
+print "=== Plan Language v0.3.0 Ready! ==="

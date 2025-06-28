@@ -1,0 +1,6 @@
+def test#0
+times_count
+
+3 times {
+writeln test
+}

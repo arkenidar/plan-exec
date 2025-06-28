@@ -1,0 +1,30 @@
+# Plan Language v0.3.0 - Working Features
+
+# Basic output
+writeln "Plan Language v0.3.0"
+
+# Boolean values
+writeln true
+writeln false
+
+# Arithmetic
+writeln 5 + 3
+writeln 7 - 2
+
+# When operator - NEW!
+writeln "yes" when true
+writeln "no" when false
+
+# Function with when
+def test#1
+arg 1 == 42
+
+writeln "The answer!" when test 42
+writeln "Not the answer" when test 10
+
+# Loop
+3 times {
+writeln "Loop works!"
+}
+
+writeln "All features working!"

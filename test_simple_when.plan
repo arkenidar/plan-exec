@@ -1,0 +1,2 @@
+# Simple test for when operator
+writeln "hello" when true
