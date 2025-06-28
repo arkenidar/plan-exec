@@ -1,4 +1,5 @@
 # The Critical skipOperator Pattern in Pangea-js
+
 ## Why This Parameter is Essential for Operator Handling
 
 The `skipOperator` parameter in pangea-js's `phraseLength` function is **absolutely critical** for proper operator precedence and recursion control. This is one of the most important insights from pangea-js architecture.
@@ -8,9 +9,9 @@ The `skipOperator` parameter in pangea-js's `phraseLength` function is **absolut
 Without `skipOperator`, parsing expressions like `"3 + 2"` would cause infinite recursion:
 
 ```
-phraseLength("3") 
+phraseLength("3")
   -> sees next word "+" (infix operator)
-  -> calls phraseLength("+") 
+  -> calls phraseLength("+")
     -> arity of "+" is 1, needs right operand
     -> calls phraseLength("2")
       -> sees next word (none), returns 1
@@ -27,27 +28,25 @@ The `skipOperator=true` parameter tells the function:
 ```javascript
 // From pangea-js source
 function phraseLength(wordIndex, skipOperator = false) {
-    // Cache check - ONLY when not skipping operators
-    if (skipOperator == false)
-        if (phraseLengths[wordIndex] !== undefined)
-            return phraseLengths[wordIndex]
-    
-    // ... calculate length ...
-    
-    // CRITICAL: Only check for operators when not skipping
-    if (skipOperator == false) {
-        var nextWord = words[nextIndex()]
-        if (nextWord !== undefined) {
-            var entry = namespace[nextWord]
-            if (entry && (entry.operator == "postfix" || entry.operator == "infix"))
-                length += phraseLength(nextIndex()) // Recursive call WITHOUT skipOperator
-        }
+  // Cache check - ONLY when not skipping operators
+  if (skipOperator == false)
+    if (phraseLengths[wordIndex] !== undefined) return phraseLengths[wordIndex];
+
+  // ... calculate length ...
+
+  // CRITICAL: Only check for operators when not skipping
+  if (skipOperator == false) {
+    var nextWord = words[nextIndex()];
+    if (nextWord !== undefined) {
+      var entry = namespace[nextWord];
+      if (entry && (entry.operator == "postfix" || entry.operator == "infix"))
+        length += phraseLength(nextIndex()); // Recursive call WITHOUT skipOperator
     }
-    
-    // Cache ONLY when not skipping
-    if (skipOperator == false)
-        phraseLengths[wordIndex] = length
-    return length
+  }
+
+  // Cache ONLY when not skipping
+  if (skipOperator == false) phraseLengths[wordIndex] = length;
+  return length;
 }
 ```
 
@@ -56,6 +55,7 @@ function phraseLength(wordIndex, skipOperator = false) {
 For expression: `"fizz" when true`
 
 ### Without skipOperator (Broken):
+
 ```
 phraseLength(0) // "fizz"
   -> length = 1
@@ -67,6 +67,7 @@ phraseLength(0) // "fizz"
 ```
 
 ### With skipOperator (Correct):
+
 ```
 phraseLength(0, false) // "fizz"
   -> length = 1
@@ -91,19 +92,22 @@ wordExec(0, false) // "fizz"
 ## 🏗️ Our Implementation in Plan Language
 
 Looking at your selected code:
+
 ```plan
 def i#0
 times_count 1
 ```
 
 This should be parsed as:
+
 - `def` (function definition, arity=2)
-  - Parameter 1: `i#0` (function signature) 
+  - Parameter 1: `i#0` (function signature)
   - Parameter 2: `times_count 1` (function body)
 
 The phrase lengths should be:
+
 - `def`: 4 (covers entire definition)
-- `i#0`: 1 (function signature)  
+- `i#0`: 1 (function signature)
 - `times_count`: 2 (function call with 1 arg)
 - `1`: 1 (literal argument)
 

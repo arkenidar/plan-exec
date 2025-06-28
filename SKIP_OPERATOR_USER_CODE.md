@@ -1,4 +1,5 @@
 # Analysis: skipOperator Pattern Applied to User's Code
+
 ## Selected lines: "def i#0" and "times_count 1"
 
 Let's trace how the `skipOperator` pattern correctly handles this code structure.
@@ -11,12 +12,14 @@ times_count 1
 ```
 
 This represents:
+
 - Function definition: `i` with arity 0
 - Function body: `times_count 1` (call times_count with argument 1)
 
 ## 📏 Phrase Length Calculation
 
 ### Step 1: phraseLength(0, false) for "def"
+
 ```
 word = "def"
 arity = 2 (def takes 2 arguments: signature + body)
@@ -29,7 +32,7 @@ length += phraseLength(1, false) // "i#0"
   -> returns 1
 length = 1 + 1 = 2
 
-// Second argument: function body  
+// Second argument: function body
 nextIndex() = 2
 length += phraseLength(2, false) // "times_count"
   -> "times_count" has arity = 1
@@ -46,8 +49,9 @@ return 4
 ```
 
 ### Step 2: phraseLength(1, false) for "i#0"
+
 ```
-word = "i#0" 
+word = "i#0"
 // Function definition pattern (contains #)
 arity = 0
 length = 1
@@ -58,6 +62,7 @@ return 1
 ```
 
 ### Step 3: phraseLength(2, false) for "times_count"
+
 ```
 word = "times_count"
 arity = 1
@@ -75,6 +80,7 @@ return 2
 ```
 
 ### Step 4: phraseLength(3, false) for "1"
+
 ```
 word = "1"
 // Literal value
@@ -97,16 +103,18 @@ Length: 4    1    2          1
 ### Without skipOperator (Broken):
 
 If we had infix operators in the function body like:
+
 ```plan
 def add#2
 arg 1 + arg 2
 ```
 
 **Without skipOperator pattern:**
+
 ```
 phraseLength(2, false) // "arg"
   -> arity = 1, needs 1 argument
-  -> calls phraseLength(3, false) // "1" 
+  -> calls phraseLength(3, false) // "1"
     -> sees "+" as next word (infix operator)
     -> calls phraseLength(4, false) // "+"
       -> arity = 1, needs right operand
@@ -123,7 +131,7 @@ phraseLength(2, false) // "arg"
 phraseLength(2, false) // "arg"
   -> arity = 1
   -> calls phraseLength(3, false) // "1"
-    -> sees "+" (infix operator) 
+    -> sees "+" (infix operator)
     -> calls phraseLength(4, false) // "+"
       -> arity = 1 (infix needs 1 explicit right operand)
       -> calls phraseLength(5, false) // "arg"
@@ -140,7 +148,7 @@ wordExec(3, false) // "1"
   -> detects "+" at next position
   -> calls wordExec(3, true) // "1" with skipOperator=TRUE
     -> returns 1 (no operator processing)
-  -> calls wordExec(5, false) // "arg 2" 
+  -> calls wordExec(5, false) // "arg 2"
     -> returns value of arg 2
   -> executes: 1 + (arg 2)
 ```

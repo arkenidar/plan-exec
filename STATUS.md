@@ -9,34 +9,39 @@
 The Plan Language has reached a significant stability milestone with all core features operational:
 
 #### ✅ Boolean Literals & Conditionals
+
 - **Boolean literals**: `true`, `false` (fully working)
 - **If statements**: `if true { writeln "yes" }` (working)
 - **If-else**: `if false { writeln "no" } { writeln "yes" }` (working)
 
 #### ✅ Function System
+
 - **Function definition**: `def add#2` followed by body (working)
 - **Function calls**: `add 5 3` returns `8` (working)
 - **Argument access**: `arg 1`, `arg 2` within functions (working)
 - **Expression evaluation**: `arg 1 + arg 2` works correctly (working)
 
 #### ✅ Arithmetic & Operators
+
 - **Infix operators**: `+`, `-`, `*`, `/`, `%` (working)
 - **Comparison operators**: `==`, `!=`, `<`, `>`, `<=`, `>=` (working)
 - **Mixed expressions**: Complex expressions work in function bodies (working)
 
 #### ✅ Control Flow
+
 - **Loop system**: `N times { body }` (working)
 - **Loop counter**: `times_count` tracking (working)
 - **Block evaluation**: Nested structures (working)
 
 #### ✅ Test Suite Status: 10/10 PASSING
+
 All features in the comprehensive test suite are now working correctly.
 
 ## ✅ What Actually Works (Tested Examples)
 
 ### ✅ Fully Working Features
 
-```plaintext
+````plaintext
 # Basic output
 writeln "Hello, World!"     # ✅ Works
 writeln 42                  # ✅ Works
@@ -75,10 +80,10 @@ arg 1 + arg 2             # ✅ Function body with expression
 writeln add 5 3           # ✅ Output: 8
 
 # Complex function example
-def multiple#2             # ✅ Function defined  
+def multiple#2             # ✅ Function defined
 arg 1 % arg 2 == 0        # ✅ Boolean expression in function
 writeln multiple 6 2      # ✅ Output: True
-```
+````
 
 - 🔶 **Loop counters**: `times_count` exists but limited
 - ❌ **Nested loop counters**: `times_count 2`, `times_count 3` not implemented
@@ -141,7 +146,7 @@ writeln multiple 6 2      # ✅ Output: True
 **ALL MAJOR COMPONENTS NOW WORKING:**
 
 - ✅ **Function system**: Definition, calls, arguments, expressions
-- ✅ **Boolean literals**: `true`, `false` 
+- ✅ **Boolean literals**: `true`, `false`
 - ✅ **Conditionals**: `if`, `if-else` with boolean logic
 - ✅ **Infix operators**: Arithmetic and comparison operators
 - ✅ **Loop system**: `times` loops with counter access
@@ -161,7 +166,7 @@ writeln multiple 6 2      # ✅ Output: True
 20 times
 print
 "fizz-buzz" when multiple_of 15
-"fizz" when multiple_of 3  
+"fizz" when multiple_of 3
 "buzz" when multiple_of 5
 i
 ```

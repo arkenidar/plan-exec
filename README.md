@@ -12,7 +12,7 @@ The Plan Execution Language is inspired by [pangea-js](https://github.com/arkeni
 
 - **✅ Functions**: `def add#2` with `arg 1 + arg 2` - fully working
 - **✅ Boolean literals**: `true`, `false` - working
-- **✅ Conditionals**: `if true { ... }` and `if-else` - working  
+- **✅ Conditionals**: `if true { ... }` and `if-else` - working
 - **✅ Operators**: `+`, `-`, `*`, `/`, `%`, `==`, `!=`, `<`, `>` - working
 - **✅ When operator**: `"value" when condition` - **NEW in v0.3.0!**
 - **✅ Loops**: `N times { ... }` with `times_count` - working
@@ -29,7 +29,7 @@ python3 test_current_features.py
 
 # Test function calls
 echo 'def add#2
-arg 1 + arg 2  
+arg 1 + arg 2
 writeln add 5 3' > test.plan && python3 plan_executor.py test.plan
 # Output: 8
 ```
@@ -42,7 +42,7 @@ def add#2
 arg 1 + arg 2
 writeln add 5 3        # Output: 8
 
-# Boolean conditionals  
+# Boolean conditionals
 if true { writeln "Yes" }                    # Output: Yes
 if false { writeln "No" } { writeln "Else" } # Output: Else
 
