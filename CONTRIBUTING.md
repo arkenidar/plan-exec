@@ -2,14 +2,20 @@
 
 ## 🎯 Current Development Focus
 
-We're currently working on **Phase 1: Core Function System (v0.2)** - making the function system actually work.
+We're currently working on **Phase 1: Core Function System (v0.2)** - implementing the pangea-js inspired unified operator and function system.
 
-### Immediate Priorities
+### ✅ Recently Completed
 
-1. **Function calls** - Make `def add#2` actually callable
-2. **Argument passing** - Fix `arg 1`, `arg 2` to return actual values
-3. **Function scope** - Add proper call stack and argument isolation
-4. **Boolean literals** - Add `true`/`false` support
+1. **Boolean literals** - ✅ `true`/`false` support working
+2. **Infix operators** - ✅ Arithmetic (`+`, `-`, `*`, `/`, `%`) and comparison (`==`, `!=`, `<`, `>`, `<=`, `>=`) working
+3. **Unified system foundation** - ✅ Call stack and operator framework implemented
+
+### 🔧 Current Priorities
+
+1. **Function calls** - Make `def add#2` actually callable (partially working)
+2. **Argument passing** - Fix `arg 1`, `arg 2` to return actual values from call stack
+3. **Function scope** - Complete call stack and argument isolation
+4. **Infix times** - Implement `N times { block }` syntax
 
 ## 🛠️ Development Setup
 
@@ -32,6 +38,9 @@ python3 plan_executor.py example_plans/testing.plan  # Test current functionalit
 ```bash
 # Run the test suite
 python3 test_current_features.py
+
+# Test unified system features
+python3 plan_executor.py test_unified_features.plan
 
 # Test specific examples
 python3 plan_executor.py example_plans/testing.plan
@@ -98,10 +107,10 @@ Known issues:
 
 ### 🔥 High Priority (v0.2)
 
-- **Function execution**: Make function calls actually work
-- **Argument handling**: Fix `arg N` to return actual values instead of strings
-- **Call stack**: Implement proper function call stack
-- **Boolean literals**: Add `true`/`false` keywords
+- **Function execution**: Complete function call mechanism (def/call partially working)
+- **Argument handling**: Fix `arg N` to return actual values from call stack
+- **Call stack**: Complete proper function call stack (foundation implemented)
+- **Infix times**: Implement `N times { block }` syntax
 
 ### 🔶 Medium Priority (v0.3)
 

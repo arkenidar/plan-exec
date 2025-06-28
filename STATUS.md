@@ -1,8 +1,23 @@
 # Plan Language: Current Status & Roadmap
 
-## 📊 What's Working Now (v0.1)
+## 📊 What's Working Now (v0.1.1)
 
-### ✅ Currently Implemented Features
+### ✅ Recently Added Features (Unified System)
+
+#### Boolean Literals & Operators
+
+- ✅ **Boolean literals**: `true`, `false`
+- ✅ **Infix arithmetic**: `3 + 4`, `10 - 2`, `5 * 6`
+- ✅ **Infix comparison**: `==`, `!=`, `<`, `>`, `<=`, `>=`
+- ✅ **Unified operator system**: Foundation from pangea-js
+
+#### Enhanced System Architecture
+
+- ✅ **Call stack system**: Function argument management
+- ✅ **Operator registry**: Infix, prefix, postfix support
+- ✅ **Function arity system**: `function_name#N` notation
+
+### ✅ Previously Implemented Features
 
 #### Basic Operations
 
@@ -48,6 +63,15 @@ writeln eval "[1, 2, 3, 4]" # ✅ Works
 3 times { writeln "Hello!" }  # ✅ Works (no output but no error)
 3 times { writeln times_count } # ✅ Works (no output but no error)
 
+# Boolean literals (NEW!)
+writeln true                 # ✅ Works (output: True)
+writeln false               # ✅ Works (output: False)
+
+# Infix arithmetic (NEW!)
+writeln 3 + 4               # ✅ Works (output: 7)
+writeln 10 - 2              # ✅ Works (output: 8)
+writeln 5 * 6               # ✅ Works (output: 30)
+
 # Function definitions
 def test#1                   # ✅ Parses without error
 arg 1
@@ -57,12 +81,14 @@ writeln "After function"     # ✅ Continues execution
 ### ⚠️ Partially Working
 
 ```plaintext
-# Boolean literals don't work
-if true { writeln "Yes" }    # ❌ "Unknown word: true"
-if false { writeln "No" }    # ❌ "Unknown word: false"
+# Function calls (definition works, calling doesn't)
+def add#2                   # ✅ Definition parses
+writeln "Function body"     # ✅ Function body parsed
+add 5 3                     # ❌ Function call not executed
 
-# Must use expressions instead
-if eval "True" { writeln "Yes" }   # Potential workaround
+# Boolean conditionals need fixing
+if true { writeln "Yes" }    # ❌ "condition must be a boolean value"
+if false { writeln "No" }    # ❌ "condition must be a boolean value"
 ```
 
 ### 🔍 Surprising Discoveries from Testing
