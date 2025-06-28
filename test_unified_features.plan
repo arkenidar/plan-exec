@@ -9,6 +9,10 @@ writeln 3 + 4
 writeln 10 - 2
 writeln 5 * 6
 
+# Test conditional statements with boolean literals
+if true { writeln "True branch executed" }
+if false { writeln "False branch executed" }
+
 # Test simple function definition
 def add#2
 writeln "Function add called"

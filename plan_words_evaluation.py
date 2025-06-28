@@ -134,12 +134,13 @@ def evaluate_word(plan_words, current_i):
 
     elif word == "if" or word == "if-else":
         condition, next_i = evaluate_word(plan_words, next_i)
-        debug_print("condition:", condition)
-        if condition == True:
+        debug_print("condition:", condition, "type:", type(condition))
+        
+        if condition is True or condition == True:
             evaluated_word, next_i = evaluate_block(plan_words, next_i)
             if word == "if-else":
                 next_i = skip_block(plan_words, next_i)
-        elif condition == False:
+        elif condition is False or condition == False:
             next_i = skip_block(plan_words, next_i)
             if word == "if-else":
                 evaluated_word, next_i = evaluate_block(plan_words, next_i)
@@ -196,12 +197,6 @@ def evaluate_word(plan_words, current_i):
             # skip the block
             next_i = skip_block(plan_words, next_i_block_start)
     else:
-        # Check if the next word is an infix operator
-        if current_i + 1 < len(plan_words) and plan_words[current_i + 1] in infix_operators:
-            evaluated_word, next_i = handle_infix_operator(plan_words, current_i)
-            if evaluated_word is not None:
-                return evaluated_word, next_i
-        
         # Check if it's a user-defined function first
         if word in function_registry:
             # It's a function call - collect arguments if any
@@ -375,35 +370,30 @@ def call_function(func_name, args):
     # Push arguments onto call stack
     call_stack.append(args)
     
-    # Store old arg function behavior
-    old_evaluate_word = evaluate_word
-    
-    def new_evaluate_word(plan_words, current_i):
-        word = plan_words[current_i]
-        if word == "arg" and current_i + 1 < len(plan_words):
-            try:
-                arg_num = int(plan_words[current_i + 1])
-                if len(call_stack) > 0 and arg_num <= len(call_stack[-1]):
-                    return call_stack[-1][arg_num - 1], current_i + 2
-            except:
-                pass
-        return old_evaluate_word(plan_words, current_i)
-    
-    # Temporarily replace evaluate_word
-    globals()['evaluate_word'] = new_evaluate_word
-    
     try:
-        # Execute function body
+        # Execute function body - simplified approach
         result = None
         current_i = 0
         while current_i < len(func_body):
+            # Simple execution without replacing global functions
+            word = func_body[current_i]
+            if word == "arg" and current_i + 1 < len(func_body):
+                try:
+                    arg_num = int(func_body[current_i + 1])
+                    if arg_num <= len(call_stack[-1]):
+                        result = call_stack[-1][arg_num - 1]
+                        current_i += 2
+                        continue
+                except:
+                    pass
+            
+            # Regular evaluation for non-arg words
             result, next_i = evaluate_word(func_body, current_i)
             if next_i is None:
                 break
             current_i = next_i
     finally:
-        # Restore original evaluate_word and pop call stack
-        globals()['evaluate_word'] = old_evaluate_word
+        # Pop call stack
         call_stack.pop()
     
     return result
