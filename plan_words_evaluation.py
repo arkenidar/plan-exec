@@ -1,5 +1,6 @@
 # Plan Language - Publication Ready Version
 # A Domain Specific Language for structured execution
+# Enhanced with features from pangea-js
 
 # Core evaluation system with boolean literals and basic operators
 
@@ -9,49 +10,62 @@ plan_eval_debug_flag = False
 function_registry = {}
 times_count = 0
 call_stack = []
+each_stack = []
+each_item_stack = []
 
-# Operator definitions
+# Enhanced operator definitions with more comprehensive support
 infix_operators = {
     '+': lambda a, b: a + b,
     '-': lambda a, b: a - b,
     '*': lambda a, b: a * b,
     '/': lambda a, b: a / b,
     '%': lambda a, b: a % b,
+    '**': lambda a, b: a ** b,  # Exponentiation
     '==': lambda a, b: a == b,
     '!=': lambda a, b: a != b,
     '<': lambda a, b: a < b,
     '>': lambda a, b: a > b,
     '<=': lambda a, b: a <= b,
     '>=': lambda a, b: a >= b,
-    'when': lambda val, cond: val if cond else None,
+    'and': lambda a, b: a and b,
+    'or': lambda a, b: a or b,
+}
+
+# Postfix operators
+postfix_operators = {
+    'squared': lambda x: x ** 2,
 }
 
 def debug_print(*args):
     if plan_eval_debug_flag:
         print("debug:", *args)
 
+# Enhanced skip_block to handle nested structures
 def skip_block(plan_words, start_i):
     nested_level = 0
     current_i = start_i
     while current_i < len(plan_words):
         word = plan_words[current_i]
-        if word == "{":
+        if word in ["{", "(", "["]:
             nested_level += 1
-        elif word == "}":
+        elif word in ["}", ")", "]"]:
             nested_level -= 1
             if nested_level == 0:
                 return current_i + 1
         current_i += 1
     return current_i
 
+# Enhanced evaluate_block with better return handling
 def evaluate_block(plan_words, start_i):
     evaluated_word = None
     current_i = start_i + 1
     while current_i < len(plan_words):
         word = plan_words[current_i]
-        if word == "}":
+        if word in ["}", ")", "]"]:
             return evaluated_word, current_i + 1
-        evaluated_word, current_i = evaluate_word(plan_words, current_i)
+        result, current_i = evaluate_word(plan_words, current_i)
+        if result is not None:
+            evaluated_word = result
     return evaluated_word, current_i
 
 def handle_infix_operator(plan_words, current_i):
@@ -116,41 +130,6 @@ def evaluate_word(plan_words, current_i):
                 return expr, next_i
         return None, next_i
     
-    # Length function (for your testing.plan)
-    elif word == "len":
-        if next_i < len(plan_words):
-            value, next_i = evaluate_word(plan_words, next_i)
-            try:
-                return len(value), next_i
-            except:
-                return 0, next_i
-        return None, next_i
-    
-    # Pass statement (no-op)
-    elif word == "pass":
-        return None, next_i
-    
-    # Print statement (for multi-line output in fizzbuzz.plan)
-    elif word == "print":
-        return handle_print_multiline(plan_words, current_i)
-    
-    # Buffer operations (for your user_sample.plan)
-    elif word == "buffer_write":
-        if next_i < len(plan_words):
-            value, next_i = evaluate_word(plan_words, next_i)
-            # Store in a global buffer
-            if not hasattr(evaluate_word, 'output_buffer'):
-                evaluate_word.output_buffer = []
-            evaluate_word.output_buffer.append(str(value))
-            return value, next_i
-        return None, next_i
-    
-    elif word == "buffer_flush":
-        if hasattr(evaluate_word, 'output_buffer'):
-            print(''.join(evaluate_word.output_buffer), end='')
-            evaluate_word.output_buffer = []
-        return None, next_i
-    
     # Conditionals
     elif word == "if":
         if next_i < len(plan_words):
@@ -168,69 +147,31 @@ def evaluate_word(plan_words, current_i):
         # Check for infix: N times { block }
         if current_i > 0:
             prev_word = plan_words[current_i - 1]
-            if prev_word.isdigit():
+            if prev_word.isdigit() and next_i < len(plan_words) and plan_words[next_i] == "{":
                 count = int(prev_word)
                 old_times_count = times_count
                 result = None
-                
-                # Check if next token is a block
-                if next_i < len(plan_words) and plan_words[next_i] == "{":
-                    # Block version: N times { ... }
-                    block_start = next_i
-                    for i in range(count):
-                        times_count = i + 1
-                        result, _ = evaluate_block(plan_words, block_start)
-                    times_count = old_times_count
-                    next_i = skip_block(plan_words, block_start)
-                    return result, next_i
-                else:
-                    # Multi-line version: N times \n statement1 \n statement2 ... (your original pattern)
-                    for i in range(count):
-                        times_count = i + 1
-                        # Execute all following statements until major keyword
-                        temp_i = next_i
-                        while temp_i < len(plan_words):
-                            word_check = plan_words[temp_i]
-                            # Stop at major keywords or numbers (next loop)
-                            if (word_check in ['def', 'times', 'if'] or 
-                                (word_check.isdigit() and temp_i + 1 < len(plan_words) and plan_words[temp_i + 1] == 'times')):
-                                break
-                            result, temp_i = evaluate_word(plan_words, temp_i)
-                    times_count = old_times_count
-                    return result, temp_i
+                for i in range(count):
+                    times_count = i + 1
+                    result, next_i = evaluate_block(plan_words, next_i)
+                times_count = old_times_count
+                return result, next_i
         
-        # Prefix: times N { block } or times N statement
+        # Prefix: times N { block }
         if next_i < len(plan_words):
             count, next_i = evaluate_word(plan_words, next_i)
-            if isinstance(count, int):
+            if isinstance(count, int) and next_i < len(plan_words) and plan_words[next_i] == "{":
                 old_times_count = times_count
                 result = None
-                
-                if next_i < len(plan_words) and plan_words[next_i] == "{":
-                    # Block version
-                    block_start = next_i
-                    for i in range(count):
-                        times_count = i + 1
-                        result, _ = evaluate_block(plan_words, block_start)
-                    times_count = old_times_count
-                    next_i = skip_block(plan_words, block_start)
-                    return result, next_i
-                else:
-                    # Single statement version: times N statement
-                    for i in range(count):
-                        times_count = i + 1
-                        result, next_i = evaluate_word(plan_words, next_i)
-                    times_count = old_times_count
-                    return result, next_i
+                for i in range(count):
+                    times_count = i + 1
+                    result, next_i = evaluate_block(plan_words, next_i)
+                times_count = old_times_count
+                return result, next_i
         return None, next_i
     
     # Times counter
     elif word == "times_count":
-        # Handle times_count with depth argument
-        if next_i < len(plan_words):
-            depth, next_i = evaluate_word(plan_words, next_i)
-            # For now, just return times_count regardless of depth
-            return times_count, next_i
         return times_count, next_i
     
     # Function definition
@@ -271,41 +212,147 @@ def evaluate_word(plan_words, current_i):
         
         # Execute function body with arguments
         old_stack = call_stack.copy()
+        call_stack.clear()
         call_stack.extend(args)
         
         result = None
-        # Evaluate function body as Plan Language code
-        func_body_words = func_def['body']
+        # Create a simple expression evaluator for function bodies
+        func_body_str = ' '.join(func_def['body'])
         
-        # Create a temporary word list for function body evaluation
-        temp_words = []
-        for word in func_body_words:
-            # Replace arg references with actual values
-            if word == 'arg':
-                temp_words.append(word)  # Keep 'arg' keyword
-            elif word.isdigit() and temp_words and temp_words[-1] == 'arg':
-                # This is an arg number, keep as is for now
-                temp_words.append(word)
-            else:
-                temp_words.append(word)
+        # Replace arg references
+        for i in range(len(args)):
+            func_body_str = func_body_str.replace(f'arg {i+1}', str(args[i]))
         
-        # Evaluate the function body using Plan Language evaluator
-        if temp_words:
-            try:
-                result, _ = evaluate_word(temp_words, 0)
-            except:
-                # Fallback: try to evaluate as Python expression for simple cases
-                func_body_str = ' '.join(func_body_words)
-                for i in range(len(args)):
-                    func_body_str = func_body_str.replace(f'arg {i+1}', str(args[i]))
-                try:
-                    result = eval(func_body_str)
-                except:
-                    result = func_body_str
+        # Try to evaluate as expression
+        try:
+            result = eval(func_body_str)
+        except:
+            # Fall back to simple parsing
+            result = func_body_str
         
         call_stack.clear()
         call_stack.extend(old_stack)
         return result, next_i
+    
+    # Enhanced conditionals with when operator
+    elif word == "when":
+        # Infix: value when condition
+        if current_i > 0:
+            prev_word = plan_words[current_i - 1]
+            if next_i < len(plan_words):
+                condition, next_i = evaluate_word(plan_words, next_i)
+                if condition:
+                    # Return the previous value
+                    try:
+                        if prev_word.replace('.', '').replace('-', '').isdigit():
+                            return eval(prev_word), next_i
+                        elif prev_word.startswith('"') and prev_word.endswith('"'):
+                            return prev_word[1:-1], next_i
+                        else:
+                            return prev_word, next_i
+                    except:
+                        return prev_word, next_i
+                return None, next_i
+        return None, next_i
+    
+    # Array/List support: [item1, item2, ...]
+    elif word == "[":
+        result = []
+        current_i = next_i
+        while current_i < len(plan_words) and plan_words[current_i] != "]":
+            item, current_i = evaluate_word(plan_words, current_i)
+            if item is not None:
+                result.append(item)
+        return result, current_i + 1 if current_i < len(plan_words) else current_i
+    
+    # Object/Dictionary support: {key1 value1 key2 value2}
+    elif word == "{":
+        result = {}
+        current_i = next_i
+        key = None
+        expecting_key = True
+        
+        while current_i < len(plan_words) and plan_words[current_i] != "}":
+            item, current_i = evaluate_word(plan_words, current_i)
+            if expecting_key:
+                key = item
+                expecting_key = False
+            else:
+                result[key] = item
+                expecting_key = True
+        
+        return result, current_i + 1 if current_i < len(plan_words) else current_i
+    
+    # Each loop support
+    elif word == "each":
+        if next_i < len(plan_words):
+            iterable, next_i = evaluate_word(plan_words, next_i)
+            if next_i < len(plan_words) and plan_words[next_i] == "{":
+                returned = None
+                each_stack.append({'stop': False})
+                
+                if isinstance(iterable, dict):
+                    items = iterable.items()
+                elif isinstance(iterable, list):
+                    items = enumerate(iterable)
+                else:
+                    each_stack.pop()
+                    return None, skip_block(plan_words, next_i)
+                
+                for key, value in items:
+                    if each_stack[-1]['stop']:
+                        break
+                    
+                    each_item_stack.append({'key': key, 'value': value})
+                    result, next_i = evaluate_block(plan_words, next_i)
+                    if result is not None:
+                        returned = result
+                    each_item_stack.pop()
+                
+                each_stack.pop()
+                return returned, next_i
+        return None, next_i
+    
+    # Each item access
+    elif word == "each_item":
+        if each_item_stack:
+            return each_item_stack[-1]['value'], next_i
+        return None, next_i
+    
+    # Each key access
+    elif word == "each_key":
+        if each_item_stack:
+            return each_item_stack[-1]['key'], next_i
+        return None, next_i
+    
+    # Each break
+    elif word == "each_break":
+        if each_stack:
+            each_stack[-1]['stop'] = True
+        return None, next_i
+    
+    # Unless operator
+    elif word == "unless":
+        if next_i < len(plan_words):
+            condition, next_i = evaluate_word(plan_words, next_i)
+            if next_i < len(plan_words) and plan_words[next_i] == "{":
+                if not condition:
+                    result, next_i = evaluate_block(plan_words, next_i)
+                    return result, next_i
+                else:
+                    return None, skip_block(plan_words, next_i)
+        return None, next_i
+    
+    # Postfix operators
+    elif current_i > 0 and word in postfix_operators:
+        prev_word = plan_words[current_i - 1]
+        try:
+            if prev_word.replace('.', '').replace('-', '').isdigit():
+                value = eval(prev_word)
+                return postfix_operators[word](value), next_i
+        except:
+            pass
+        return None, next_i
     
     # Infix operator check
     elif current_i + 1 < len(plan_words) and plan_words[current_i + 1] in infix_operators:
@@ -328,35 +375,6 @@ def evaluate_word(plan_words, current_i):
         # Unknown word
         debug_print(f"Unknown word: {word}")
         return word, next_i
-
-# Multi-line print handler for FizzBuzz-style patterns
-def handle_print_multiline(plan_words, start_i):
-    """Handle multi-line print with when expressions (your fizzbuzz.plan pattern)"""
-    current_i = start_i + 1  # Skip the 'print' keyword
-    result_values = []
-    
-    # Process all expressions until we hit a major keyword or block
-    while current_i < len(plan_words):
-        word = plan_words[current_i]
-        
-        # Stop at major keywords or block structures
-        if word in ['def', 'times', 'if', '{', '}']:
-            break
-            
-        # Evaluate the expression
-        value, current_i = evaluate_word(plan_words, current_i)
-        if value is not None:
-            result_values.append(value)
-    
-    # Print the first non-None value (pangea-js style)
-    if result_values:
-        for val in result_values:
-            if val is not None:
-                print(val)
-                break
-        return result_values[0], current_i
-    
-    return None, current_i
 
 def evaluate_plan(plan_words):
     """Main evaluation function"""

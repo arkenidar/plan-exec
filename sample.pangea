@@ -1,0 +1,48 @@
+# Sample Pangea program
+# This demonstrates various features of the Pangea language
+
+print "=== Pangea Sample Program ==="
+
+# Basic arithmetic
+print "Arithmetic:"
+print 2 + 3
+print 5 * 6
+print 10 - 4
+print 2 ** 3
+
+# Function definition and recursion
+print "Factorial function:"
+def factorial#1
+if ( arg 1 ) == 0
+    1
+    ( arg 1 ) * factorial ( arg 1 ) - 1
+
+print factorial 5
+
+# Loops and counters
+print "Counting loop:"
+5 times (
+    print "Count:" 
+    print times_count 1
+)
+
+# FizzBuzz implementation
+print "FizzBuzz:"
+def multiple#2
+0 == ( ( arg 1 ) % ( arg 2 ) )
+
+def i#0
+times_count 1
+
+def multiple_of#1
+multiple i arg 1
+
+15 times (
+    print
+    "fizz-buzz" when multiple_of 15
+    "fizz" when multiple_of 3
+    "buzz" when multiple_of 5
+    i
+)
+
+print "=== End of program ==="
