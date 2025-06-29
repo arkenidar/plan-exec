@@ -1,0 +1,27 @@
+# Requirements for Pangea Python Interpreter Testing Suite
+# 
+# Core testing dependencies for stress testing, performance benchmarking,
+# and production readiness validation
+
+# System monitoring for performance testing
+psutil>=5.8.0
+
+# Statistical analysis for benchmarking
+matplotlib>=3.5.0  # For performance visualization (optional)
+numpy>=1.21.0      # For advanced statistical analysis (optional)
+
+# Standard library modules used:
+# - threading (built-in)
+# - concurrent.futures (built-in)
+# - time (built-in)
+# - statistics (built-in) 
+# - json (built-in)
+# - subprocess (built-in)
+# - queue (built-in)
+# - ast (built-in)
+# - gc (built-in)
+# - traceback (built-in)
+# - pathlib (built-in)
+
+# Note: The core Pangea interpreter has no external dependencies
+# These requirements are only for the comprehensive testing suite
